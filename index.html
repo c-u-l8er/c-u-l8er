@@ -1,0 +1,523 @@
+<!doctype html>
+<html>
+    <head>
+        <title>C U L8er: Video Game Transformation</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #000;
+                font-family: Arial, sans-serif;
+            }
+            canvas {
+                display: block;
+            }
+            #canvas-container {
+                position: relative;
+                width: 100%;
+                height: 100vh;
+            }
+            .overlay {
+                position: absolute;
+                color: #fff;
+                z-index: 100;
+                text-align: center;
+                transition: transform 0.2s ease-out;
+                background-color: rgba(0, 0, 0, 0.5);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(135, 206, 235, 0.5);
+                width: 400px;
+            }
+            h1 {
+                font-size: 32px;
+                margin: 0 0 10px 0;
+                text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            }
+            p {
+                font-size: 16px;
+                margin: 0 0 20px 0;
+                opacity: 0.8;
+            }
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #87ceeb;
+                color: #000;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+                box-shadow: 0 0 10px rgba(135, 206, 235, 0.7);
+                transition: all 0.3s ease;
+            }
+            .button:hover {
+                background-color: #5cacee;
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(135, 206, 235, 0.9);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="canvas-container">
+            <div class="overlay">
+                <h1>C U L8er</h1>
+                <p>
+                    Cosmic Universal Lithography:<br />Video Game Transformation
+                </p>
+                <a href="https://wrand.cc" class="button" target="_blank"
+                    >WRANDTEL</a
+                >
+            </div>
+        </div>
+
+        <script>
+            // Create a canvas for stars and effects
+            const effectsCanvas = document.createElement("canvas");
+            effectsCanvas.width = window.innerWidth;
+            effectsCanvas.height = window.innerHeight;
+            effectsCanvas.style.position = "absolute";
+            effectsCanvas.style.top = "0";
+            effectsCanvas.style.left = "0";
+            effectsCanvas.style.zIndex = "1";
+            document
+                .getElementById("canvas-container")
+                .appendChild(effectsCanvas);
+            const effectsCtx = effectsCanvas.getContext("2d");
+
+            // Module aliases for Matter.js
+            const Engine = Matter.Engine,
+                Render = Matter.Render,
+                Runner = Matter.Runner,
+                Bodies = Matter.Bodies,
+                Composite = Matter.Composite,
+                Body = Matter.Body,
+                Events = Matter.Events;
+
+            // Create engine and world
+            const engine = Engine.create({
+                gravity: { x: 0, y: 0 }, // Zero gravity for space
+            });
+            const world = engine.world;
+
+            // Create renderer
+            const render = Render.create({
+                element: document.getElementById("canvas-container"),
+                engine: engine,
+                options: {
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    wireframes: false,
+                    background: "transparent",
+                    pixelRatio: window.devicePixelRatio,
+                },
+            });
+            render.canvas.style.zIndex = "2";
+
+            // Run the renderer
+            Render.run(render);
+
+            // Create a runner
+            const runner = Runner.create();
+            Runner.run(runner, engine);
+
+            // Lightbulb data structure
+            const lightbulbs = [];
+            // Same color for all lightbulbs
+            const bulbColor = "#87CEEB"; // Light blue color
+
+            // Connection distance threshold
+            const connectionDistance = 150;
+
+            // SVG lightbulb path (to be used for drawing)
+            const lightbulbSVG = {
+                // SVG data for a proper lightbulb shape
+                bulbPath:
+                    "M0,-20 C-11,-20 -20,-11 -20,0 C-20,11 -11,20 0,20 C11,20 20,11 20,0 C20,-11 11,-20 0,-20",
+                basePath: "M-7,20 L-7,28 L7,28 L7,20",
+                filamentPath: "M-5,0 C-5,-5 5,-5 5,0",
+            };
+
+            // Create a single lightbulb with a letter
+            function createLightbulb(x, y, letter) {
+                // Glass bulb (main body)
+                const bulb = Bodies.circle(x, y, 20, {
+                    friction: 0,
+                    frictionAir: 0, // No air friction for infinite movement
+                    restitution: 1,
+                    render: {
+                        fillStyle: bulbColor,
+                        opacity: 0.7,
+                    },
+                });
+
+                // Add properties for drawing glow and letter later
+                bulb.color = bulbColor;
+                bulb.glowIntensity = 0.7;
+                bulb.letter = letter;
+
+                lightbulbs.push(bulb);
+                return bulb;
+            }
+
+            // Create 26 lightbulbs (A-Z)
+            for (let i = 0; i < 26; i++) {
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const letter = String.fromCharCode(65 + i); // A=65, B=66, etc.
+
+                const lightbulb = createLightbulb(x, y, letter);
+
+                // Add random velocity
+                Body.setVelocity(lightbulb, {
+                    x: (Math.random() - 0.5) * 3,
+                    y: (Math.random() - 0.5) * 3,
+                });
+
+                Composite.add(world, lightbulb);
+            }
+
+            // Setup for the bouncing overlay
+            const overlay = document.querySelector(".overlay");
+            const overlayWidth = overlay.offsetWidth;
+            const overlayHeight = overlay.offsetHeight;
+
+            // Initial position and velocity for the overlay
+            let overlayX = Math.random() * (window.innerWidth - overlayWidth);
+            let overlayY = Math.random() * (window.innerHeight - overlayHeight);
+            let overlayVX = 2; // X velocity
+            let overlayVY = 1.5; // Y velocity
+
+            // Apply initial position
+            overlay.style.left = `${overlayX}px`;
+            overlay.style.top = `${overlayY}px`;
+
+            // Star data with direction for movement
+            const stars = [];
+            for (let i = 0; i < 200; i++) {
+                stars.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    radius: Math.random() * 1.5 + 0.5,
+                    opacity: Math.random() * 0.8 + 0.2,
+                    twinkleSpeed: Math.random() * 0.05 + 0.01,
+                    // Add very slow movement to stars
+                    vx: (Math.random() - 0.5) * 0.1,
+                    vy: (Math.random() - 0.5) * 0.1,
+                });
+            }
+
+            // Add before update event to handle wrap-around
+            Events.on(engine, "beforeUpdate", function () {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+
+                // Check each lightbulb position and wrap if needed
+                for (let i = 0; i < lightbulbs.length; i++) {
+                    const bulb = lightbulbs[i];
+                    const bulbX = bulb.position.x;
+                    const bulbY = bulb.position.y;
+
+                    // Wrap horizontally
+                    if (bulbX < -50) {
+                        Body.setPosition(bulb, {
+                            x: width + 50,
+                            y: bulbY,
+                        });
+                    } else if (bulbX > width + 50) {
+                        Body.setPosition(bulb, {
+                            x: -50,
+                            y: bulbY,
+                        });
+                    }
+
+                    // Wrap vertically
+                    if (bulbY < -50) {
+                        Body.setPosition(bulb, {
+                            x: bulbX,
+                            y: height + 50,
+                        });
+                    } else if (bulbY > height + 50) {
+                        Body.setPosition(bulb, {
+                            x: bulbX,
+                            y: -50,
+                        });
+                    }
+
+                    // Maintain constant velocity (to counteract any slowdowns)
+                    const velocity = bulb.velocity;
+                    const speed = Math.sqrt(
+                        velocity.x * velocity.x + velocity.y * velocity.y,
+                    );
+
+                    // Only boost if speed drops below original level
+                    if (speed < 2) {
+                        const direction = {
+                            x: velocity.x / speed,
+                            y: velocity.y / speed,
+                        };
+
+                        Body.setVelocity(bulb, {
+                            x: direction.x * 3,
+                            y: direction.y * 3,
+                        });
+                    }
+                }
+            });
+
+            // Function to draw a path with transformation
+            function drawPath(ctx, path, x, y, rotation = 0) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(rotation);
+
+                const pathData = new Path2D(path);
+                ctx.fill(pathData);
+
+                ctx.restore();
+            }
+
+            // Update overlay position (bouncing effect)
+            function updateOverlayPosition() {
+                // Move the overlay according to its velocity
+                overlayX += overlayVX;
+                overlayY += overlayVY;
+
+                // Get current window dimensions
+                const maxX = window.innerWidth - overlayWidth;
+                const maxY = window.innerHeight - overlayHeight;
+
+                // Bounce off the edges
+                if (overlayX <= 0) {
+                    overlayX = 0;
+                    overlayVX = Math.abs(overlayVX);
+                } else if (overlayX >= maxX) {
+                    overlayX = maxX;
+                    overlayVX = -Math.abs(overlayVX);
+                }
+
+                if (overlayY <= 0) {
+                    overlayY = 0;
+                    overlayVY = Math.abs(overlayVY);
+                } else if (overlayY >= maxY) {
+                    overlayY = maxY;
+                    overlayVY = -Math.abs(overlayVY);
+                }
+
+                // Apply the new position
+                overlay.style.left = `${overlayX}px`;
+                overlay.style.top = `${overlayY}px`;
+
+                // Add a slight rotation based on direction
+                const angle =
+                    Math.atan2(overlayVY, overlayVX) * (180 / Math.PI);
+                overlay.style.transform = `rotate(${angle * 0.05}deg)`;
+
+                // Schedule the next update
+                requestAnimationFrame(updateOverlayPosition);
+            }
+
+            // Start the overlay animation
+            updateOverlayPosition();
+
+            // Animation function for stars, glows, letters, and connections
+            // Find and replace the animate function which draws the lightbulbs
+            // Replace this section in your code
+            function animate() {
+                // Clear the canvas
+                effectsCtx.clearRect(
+                    0,
+                    0,
+                    effectsCanvas.width,
+                    effectsCanvas.height,
+                );
+
+                // Update and draw stars
+                for (let i = 0; i < stars.length; i++) {
+                    const star = stars[i];
+
+                    // Move the star
+                    star.x += star.vx;
+                    star.y += star.vy;
+
+                    // Wrap the stars when they go off screen
+                    if (star.x < 0) star.x = effectsCanvas.width;
+                    if (star.x > effectsCanvas.width) star.x = 0;
+                    if (star.y < 0) star.y = effectsCanvas.height;
+                    if (star.y > effectsCanvas.height) star.y = 0;
+
+                    // Twinkle effect
+                    star.opacity =
+                        0.2 +
+                        (Math.sin(Date.now() * star.twinkleSpeed) + 1) * 0.4;
+
+                    effectsCtx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                    effectsCtx.beginPath();
+                    effectsCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    effectsCtx.fill();
+                }
+
+                // Draw connections between nearby lightbulbs
+                for (let i = 0; i < lightbulbs.length; i++) {
+                    const bulb1 = lightbulbs[i];
+
+                    for (let j = i + 1; j < lightbulbs.length; j++) {
+                        const bulb2 = lightbulbs[j];
+
+                        // Calculate distance between bulbs
+                        const dx = bulb1.position.x - bulb2.position.x;
+                        const dy = bulb1.position.y - bulb2.position.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        // Draw connection if the bulbs are close enough
+                        if (distance < connectionDistance) {
+                            // Adjust opacity based on distance
+                            const opacity = 1 - distance / connectionDistance;
+
+                            effectsCtx.strokeStyle = `rgba(135, 206, 235, ${opacity * 0.5})`;
+                            effectsCtx.lineWidth = 2;
+                            effectsCtx.beginPath();
+                            effectsCtx.moveTo(
+                                bulb1.position.x,
+                                bulb1.position.y,
+                            );
+                            effectsCtx.lineTo(
+                                bulb2.position.x,
+                                bulb2.position.y,
+                            );
+                            effectsCtx.stroke();
+                        }
+                    }
+                }
+
+                // Draw each lightbulb using SVG paths
+                for (let i = 0; i < lightbulbs.length; i++) {
+                    const bulb = lightbulbs[i];
+                    const intensity =
+                        0.5 + Math.sin(Date.now() * 0.002 + i) * 0.2;
+
+                    // Parse color to RGB for glow
+                    let r = 135,
+                        g = 206,
+                        b = 235; // Light blue RGB
+
+                    // Create radial gradient for glow
+                    const gradient = effectsCtx.createRadialGradient(
+                        bulb.position.x,
+                        bulb.position.y,
+                        5,
+                        bulb.position.x,
+                        bulb.position.y,
+                        40,
+                    );
+
+                    gradient.addColorStop(
+                        0,
+                        `rgba(${r}, ${g}, ${b}, ${0.7 * intensity * bulb.glowIntensity})`,
+                    );
+                    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+                    effectsCtx.fillStyle = gradient;
+                    effectsCtx.beginPath();
+                    effectsCtx.arc(
+                        bulb.position.x,
+                        bulb.position.y,
+                        40,
+                        0,
+                        Math.PI * 2,
+                    );
+                    effectsCtx.fill();
+
+                    // Draw glass bulb using SVG path
+                    effectsCtx.fillStyle = bulbColor;
+                    drawPath(
+                        effectsCtx,
+                        lightbulbSVG.bulbPath,
+                        bulb.position.x,
+                        bulb.position.y,
+                    );
+
+                    // Draw a metal base using SVG path
+                    effectsCtx.fillStyle = "#777";
+                    drawPath(
+                        effectsCtx,
+                        lightbulbSVG.basePath,
+                        bulb.position.x,
+                        bulb.position.y,
+                    );
+
+                    // Add golden glow lines around the bulb
+                    const glowIntensity =
+                        0.4 + Math.sin(Date.now() * 0.003 + i) * 0.2;
+                    effectsCtx.strokeStyle = `rgba(255, 215, 0, ${glowIntensity})`;
+                    effectsCtx.lineWidth = 2;
+
+                    // Draw 3 concentric circles with varying radii for glow effect
+                    for (let radius = 25; radius <= 35; radius += 5) {
+                        effectsCtx.beginPath();
+                        effectsCtx.arc(
+                            bulb.position.x,
+                            bulb.position.y,
+                            radius,
+                            0,
+                            Math.PI * 2,
+                        );
+                        effectsCtx.stroke();
+                    }
+
+                    // Draw letter in the center of the bulb with gold color
+                    const goldColor = `rgba(255, 215, 0, ${0.8 + Math.sin(Date.now() * 0.003 + i) * 0.2})`;
+                    effectsCtx.fillStyle = goldColor;
+                    effectsCtx.font = "bold 18px Arial";
+                    effectsCtx.textAlign = "center";
+                    effectsCtx.textBaseline = "middle";
+                    effectsCtx.fillText(
+                        bulb.letter,
+                        bulb.position.x,
+                        bulb.position.y - 3,
+                    );
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            // Start animation
+            animate();
+
+            // Button glow animation
+            setInterval(() => {
+                const button = document.querySelector(".button");
+                const currentGlow = Math.floor(Math.random() * 5) + 5; // Random glow between 5-10px
+                button.style.boxShadow = `0 0 ${currentGlow}px rgba(135, 206, 235, 0.8)`;
+            }, 1000);
+
+            // Handle window resize
+            window.addEventListener("resize", function () {
+                // Update canvases
+                render.canvas.width = window.innerWidth;
+                render.canvas.height = window.innerHeight;
+                effectsCanvas.width = window.innerWidth;
+                effectsCanvas.height = window.innerHeight;
+
+                // Update renderer
+                render.options.width = window.innerWidth;
+                render.options.height = window.innerHeight;
+
+                // Make sure the overlay stays within bounds after resize
+                const maxX = window.innerWidth - overlayWidth;
+                const maxY = window.innerHeight - overlayHeight;
+
+                if (overlayX > maxX) {
+                    overlayX = maxX;
+                    overlay.style.left = `${overlayX}px`;
+                }
+
+                if (overlayY > maxY) {
+                    overlayY = maxY;
+                    overlay.style.top = `${overlayY}px`;
+                }
+            });
+        </script>
+    </body>
+</html>
