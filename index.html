@@ -28,7 +28,7 @@
                 background-color: rgba(0, 0, 0, 0.5);
                 padding: 20px;
                 border-radius: 10px;
-                box-shadow: 0 0 20px rgba(135, 206, 235, 0.5);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
                 width: 400px;
             }
             h1 {
@@ -44,18 +44,18 @@
             .button {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #87ceeb;
+                background-color: rgba(255, 215, 0, 0.7);
                 color: #000;
                 text-decoration: none;
                 border-radius: 5px;
                 font-weight: bold;
-                box-shadow: 0 0 10px rgba(135, 206, 235, 0.7);
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
                 transition: all 0.3s ease;
             }
             .button:hover {
-                background-color: #5cacee;
+                background-color: rgba(255, 215, 0, 1);
                 transform: scale(1.05);
-                box-shadow: 0 0 15px rgba(135, 206, 235, 0.9);
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
             }
         </style>
     </head>
@@ -64,10 +64,11 @@
             <div class="overlay">
                 <h1>C U L8er</h1>
                 <p>
-                    Cosmic Universal Lithography:<br />Video Game Transformation
+                    Cosmic Universal Lithography 8er<br />(Video Game
+                    Transformation)
                 </p>
                 <a href="https://wrand.cc" class="button" target="_blank"
-                    >WRANDTEL</a
+                    >SUBMIT IDEA</a
                 >
             </div>
         </div>
@@ -127,22 +128,28 @@
             // Same color for all lightbulbs
             const bulbColor = "#87CEEB"; // Light blue color
 
-            // Connection distance threshold
-            const connectionDistance = 150;
+            // Connection distance threshold - increased for larger bulbs
+            const connectionDistance = 300;
 
-            // SVG lightbulb path (to be used for drawing)
+            // MODIFIED: Increase size by 2.5 times - adjusted SVG paths
+            const bulbSize = 50; // Original was 20, now 50 (2.5x larger)
+
+            // SVG lightbulb path (scaled up 2.5x from original)
             const lightbulbSVG = {
-                // SVG data for a proper lightbulb shape
+                // SVG data for a proper lightbulb shape - scaled up 2.5x
                 bulbPath:
-                    "M0,-20 C-11,-20 -20,-11 -20,0 C-20,11 -11,20 0,20 C11,20 20,11 20,0 C20,-11 11,-20 0,-20",
-                basePath: "M-7,20 L-7,28 L7,28 L7,20",
-                filamentPath: "M-5,0 C-5,-5 5,-5 5,0",
+                    "M0,-50 C-27.5,-50 -50,-27.5 -50,0 C-50,27.5 -27.5,50 0,50 C27.5,50 50,27.5 50,0 C50,-27.5 27.5,-50 0,-50",
+                basePath: "M-17.5,50 L-17.5,70 L17.5,70 L17.5,50",
+                filamentPath: "M-12.5,0 C-12.5,-12.5 12.5,-12.5 12.5,0",
             };
 
-            // Create a single lightbulb with a letter
-            function createLightbulb(x, y, letter) {
-                // Glass bulb (main body)
-                const bulb = Bodies.circle(x, y, 20, {
+            // MODIFIED: Create a single lightbulb with binary digits
+            function createLightbulb(x, y, number) {
+                // Convert number to 3-digit binary
+                const binaryStr = number.toString(2).padStart(3, "0");
+
+                // Glass bulb (main body) - 2.5x larger radius
+                const bulb = Bodies.circle(x, y, bulbSize, {
                     friction: 0,
                     frictionAir: 0, // No air friction for infinite movement
                     restitution: 1,
@@ -152,22 +159,21 @@
                     },
                 });
 
-                // Add properties for drawing glow and letter later
+                // Add properties for drawing glow and binary digits later
                 bulb.color = bulbColor;
                 bulb.glowIntensity = 0.7;
-                bulb.letter = letter;
+                bulb.binaryStr = binaryStr;
 
                 lightbulbs.push(bulb);
                 return bulb;
             }
 
-            // Create 26 lightbulbs (A-Z)
-            for (let i = 0; i < 26; i++) {
+            // MODIFIED: Create only 8 lightbulbs (numbered 0-7)
+            for (let i = 0; i < 8; i++) {
                 const x = Math.random() * window.innerWidth;
                 const y = Math.random() * window.innerHeight;
-                const letter = String.fromCharCode(65 + i); // A=65, B=66, etc.
 
-                const lightbulb = createLightbulb(x, y, letter);
+                const lightbulb = createLightbulb(x, y, i);
 
                 // Add random velocity
                 Body.setVelocity(lightbulb, {
@@ -219,29 +225,29 @@
                     const bulbX = bulb.position.x;
                     const bulbY = bulb.position.y;
 
-                    // Wrap horizontally
-                    if (bulbX < -50) {
+                    // Wrap horizontally - adjusted for larger size
+                    if (bulbX < -120) {
                         Body.setPosition(bulb, {
-                            x: width + 50,
+                            x: width + 120,
                             y: bulbY,
                         });
-                    } else if (bulbX > width + 50) {
+                    } else if (bulbX > width + 120) {
                         Body.setPosition(bulb, {
-                            x: -50,
+                            x: -120,
                             y: bulbY,
                         });
                     }
 
-                    // Wrap vertically
-                    if (bulbY < -50) {
+                    // Wrap vertically - adjusted for larger size
+                    if (bulbY < -120) {
                         Body.setPosition(bulb, {
                             x: bulbX,
-                            y: height + 50,
+                            y: height + 120,
                         });
-                    } else if (bulbY > height + 50) {
+                    } else if (bulbY > height + 120) {
                         Body.setPosition(bulb, {
                             x: bulbX,
-                            y: -50,
+                            y: -120,
                         });
                     }
 
@@ -322,8 +328,6 @@
             updateOverlayPosition();
 
             // Animation function for stars, glows, letters, and connections
-            // Find and replace the animate function which draws the lightbulbs
-            // Replace this section in your code
             function animate() {
                 // Clear the canvas
                 effectsCtx.clearRect(
@@ -358,7 +362,7 @@
                     effectsCtx.fill();
                 }
 
-                // Draw connections between nearby lightbulbs
+                // MODIFIED: Draw gold connections between nearby lightbulbs
                 for (let i = 0; i < lightbulbs.length; i++) {
                     const bulb1 = lightbulbs[i];
 
@@ -375,8 +379,9 @@
                             // Adjust opacity based on distance
                             const opacity = 1 - distance / connectionDistance;
 
-                            effectsCtx.strokeStyle = `rgba(135, 206, 235, ${opacity * 0.5})`;
-                            effectsCtx.lineWidth = 2;
+                            // MODIFIED: Changed connections to gold
+                            effectsCtx.strokeStyle = `rgba(255, 215, 0, ${opacity * 0.7})`;
+                            effectsCtx.lineWidth = 3; // Slightly thicker gold lines
                             effectsCtx.beginPath();
                             effectsCtx.moveTo(
                                 bulb1.position.x,
@@ -402,14 +407,14 @@
                         g = 206,
                         b = 235; // Light blue RGB
 
-                    // Create radial gradient for glow
+                    // Create radial gradient for glow - scaled up for larger bulbs
                     const gradient = effectsCtx.createRadialGradient(
                         bulb.position.x,
                         bulb.position.y,
-                        5,
+                        12.5, // Scaled up
                         bulb.position.x,
                         bulb.position.y,
-                        40,
+                        100, // Scaled up
                     );
 
                     gradient.addColorStop(
@@ -423,7 +428,7 @@
                     effectsCtx.arc(
                         bulb.position.x,
                         bulb.position.y,
-                        40,
+                        100, // Scaled up
                         0,
                         Math.PI * 2,
                     );
@@ -447,14 +452,14 @@
                         bulb.position.y,
                     );
 
-                    // Add golden glow lines around the bulb
+                    // Add golden glow lines around the bulb - scaled up
                     const glowIntensity =
                         0.4 + Math.sin(Date.now() * 0.003 + i) * 0.2;
                     effectsCtx.strokeStyle = `rgba(255, 215, 0, ${glowIntensity})`;
                     effectsCtx.lineWidth = 2;
 
-                    // Draw 3 concentric circles with varying radii for glow effect
-                    for (let radius = 25; radius <= 35; radius += 5) {
+                    // Draw 3 concentric circles with varying radii for glow effect - scaled up
+                    for (let radius = 62.5; radius <= 87.5; radius += 12.5) {
                         effectsCtx.beginPath();
                         effectsCtx.arc(
                             bulb.position.x,
@@ -466,16 +471,31 @@
                         effectsCtx.stroke();
                     }
 
-                    // Draw letter in the center of the bulb with gold color
-                    const goldColor = `rgba(255, 215, 0, ${0.8 + Math.sin(Date.now() * 0.003 + i) * 0.2})`;
-                    effectsCtx.fillStyle = goldColor;
-                    effectsCtx.font = "bold 18px Arial";
+                    // MODIFIED: Draw binary digits in the center of the bulb with black color
+                    // Split the binary string into individual digits
+                    const digits = bulb.binaryStr.split("");
+
+                    // Draw each digit in a vertical stack
+                    effectsCtx.fillStyle = "#000000"; // Black color
+                    effectsCtx.font = "bold 20px monospace"; // Monospace font for binary digits
                     effectsCtx.textAlign = "center";
                     effectsCtx.textBaseline = "middle";
+
+                    // Position the digits vertically inside the bulb
                     effectsCtx.fillText(
-                        bulb.letter,
+                        digits[0],
                         bulb.position.x,
-                        bulb.position.y - 3,
+                        bulb.position.y - 15,
+                    );
+                    effectsCtx.fillText(
+                        digits[1],
+                        bulb.position.x,
+                        bulb.position.y,
+                    );
+                    effectsCtx.fillText(
+                        digits[2],
+                        bulb.position.x,
+                        bulb.position.y + 15,
                     );
                 }
 
