@@ -28,8 +28,9 @@
                 background-color: rgba(0, 0, 0, 0.5);
                 padding: 20px;
                 border-radius: 10px;
-                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-                width: 400px;
+                box-shadow: 0 0 20px rgba(128, 0, 128, 0.5); /* Purple box shadow */
+                max-width: 400px;
+                width: 100%;
             }
             h1 {
                 font-size: 32px;
@@ -51,11 +52,32 @@
                 font-weight: bold;
                 box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
                 transition: all 0.3s ease;
+                margin: 5px;
             }
             .button:hover {
                 background-color: rgba(255, 215, 0, 1);
                 transform: scale(1.05);
                 box-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+            }
+            .button.solution {
+                background-color: rgba(
+                    135,
+                    206,
+                    235,
+                    0.7
+                ); /* Light blue background */
+                color: #000; /* Black text */
+                box-shadow: 0 0 10px rgba(135, 206, 235, 0.7); /* Light blue glow */
+            }
+
+            .button.solution:hover {
+                background-color: rgba(
+                    135,
+                    206,
+                    235,
+                    1
+                ); /* Brighter light blue on hover */
+                box-shadow: 0 0 15px rgba(135, 206, 235, 0.9); /* More intense glow on hover */
             }
         </style>
     </head>
@@ -68,7 +90,31 @@
                     Transformation)
                 </p>
                 <a href="https://wrand.cc" class="button" target="_blank"
-                    >SUBMIT IDEA</a
+                    >R&D IDEA</a
+                >
+                <a href="https://webtracks.click" class="button" target="_blank"
+                    >TRACK IDEA</a
+                >
+                <br />
+                <a href="https://webhost.systems" class="button" target="_blank"
+                    >HOST IDEA</a
+                >
+                <a href="https://bendscript.com" class="button" target="_blank"
+                    >SCRIPT IDEA</a
+                >
+                <br />
+                <a
+                    href="https://istrav.com"
+                    class="button solution"
+                    target="_blank"
+                    >WEB SOLUTIONS</a
+                >
+                <br />
+                <a
+                    href="https://subvind.com"
+                    class="button solution"
+                    target="_blank"
+                    >COMMUNITY SOLUTIONS</a
                 >
             </div>
         </div>
@@ -192,8 +238,8 @@
             // Initial position and velocity for the overlay
             let overlayX = Math.random() * (window.innerWidth - overlayWidth);
             let overlayY = Math.random() * (window.innerHeight - overlayHeight);
-            let overlayVX = 2; // X velocity
-            let overlayVY = 1.5; // Y velocity
+            let overlayVX = 0.75; // X velocity
+            let overlayVY = 0.5; // Y velocity
 
             // Apply initial position
             overlay.style.left = `${overlayX}px`;
@@ -476,7 +522,7 @@
                     const digits = bulb.binaryStr.split("");
 
                     // Draw each digit in a vertical stack
-                    effectsCtx.fillStyle = "#000000"; // Black color
+                    effectsCtx.fillStyle = "purple"; // Black color
                     effectsCtx.font = "bold 20px monospace"; // Monospace font for binary digits
                     effectsCtx.textAlign = "center";
                     effectsCtx.textBaseline = "middle";
