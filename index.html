@@ -148,6 +148,12 @@
         </div>
 
         <script>
+            // Add these variables at the top of your script
+            let mouseX = 0;
+            let mouseY = 0;
+            let hoveredBulb = null;
+            let isMouseDown = false;
+
             // Create a canvas for stars and effects
             const effectsCanvas = document.createElement("canvas");
             effectsCanvas.width = window.innerWidth;
@@ -160,6 +166,44 @@
                 .getElementById("canvas-container")
                 .appendChild(effectsCanvas);
             const effectsCtx = effectsCanvas.getContext("2d");
+
+            // 2. Now add the event listeners right after creating the canvas:
+            // Add mouse event listeners to the canvas
+            effectsCanvas.addEventListener("mousemove", function (event) {
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+
+                // Check if mouse is over any lightbulb
+                hoveredBulb = null;
+                for (let i = 0; i < lightbulbs.length; i++) {
+                    const bulb = lightbulbs[i];
+                    const dx = mouseX - bulb.position.x;
+                    const dy = mouseY - bulb.position.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < bulbSize) {
+                        hoveredBulb = bulb;
+                        effectsCanvas.style.cursor = "pointer";
+                        break;
+                    }
+                }
+
+                if (!hoveredBulb) {
+                    effectsCanvas.style.cursor = "default";
+                }
+            });
+
+            effectsCanvas.addEventListener("mousedown", function () {
+                isMouseDown = true;
+            });
+
+            effectsCanvas.addEventListener("mouseup", function () {
+                if (isMouseDown && hoveredBulb) {
+                    // Open link when lightbulb is clicked
+                    window.location.href = "https://lifecycle.c-u-l8er.link";
+                }
+                isMouseDown = false;
+            });
 
             // Module aliases for Matter.js
             const Engine = Matter.Engine,
@@ -217,7 +261,7 @@
                 filamentPath: "M-12.5,0 C-12.5,-12.5 12.5,-12.5 12.5,0",
             };
 
-            // MODIFIED: Create a single lightbulb with binary digits
+            // Modify the createLightbulb function to include a hovered property
             function createLightbulb(x, y, number) {
                 // Convert number to 3-digit binary
                 const binaryStr = number.toString(2).padStart(3, "0");
@@ -237,6 +281,7 @@
                 bulb.color = bulbColor;
                 bulb.glowIntensity = 0.7;
                 bulb.binaryStr = binaryStr;
+                bulb.isHovered = false; // Add this property
 
                 lightbulbs.push(bulb);
                 return bulb;
@@ -476,10 +521,27 @@
                     const intensity =
                         0.5 + Math.sin(Date.now() * 0.002 + i) * 0.2;
 
+                    // Check if this bulb is being hovered over
+                    bulb.isHovered = hoveredBulb === bulb;
+
+                    // Set the bulb color based on hover state
+                    const currentBulbColor = bulb.isHovered
+                        ? "#800080"
+                        : bulbColor; // Purple if hovered, light blue otherwise
+
                     // Parse color to RGB for glow
-                    let r = 135,
-                        g = 206,
-                        b = 235; // Light blue RGB
+                    let r, g, b;
+                    if (bulb.isHovered) {
+                        // Purple color when hovered (128, 0, 128)
+                        r = 128;
+                        g = 0;
+                        b = 128;
+                    } else {
+                        // Original light blue color
+                        r = 135;
+                        g = 206;
+                        b = 235;
+                    }
 
                     // Create radial gradient for glow - scaled up for larger bulbs
                     const gradient = effectsCtx.createRadialGradient(
@@ -508,8 +570,8 @@
                     );
                     effectsCtx.fill();
 
-                    // Draw glass bulb using SVG path
-                    effectsCtx.fillStyle = bulbColor;
+                    // Draw glass bulb using SVG path - using current color based on hover state
+                    effectsCtx.fillStyle = currentBulbColor;
                     drawPath(
                         effectsCtx,
                         lightbulbSVG.bulbPath,
@@ -529,7 +591,14 @@
                     // Add golden glow lines around the bulb - scaled up
                     const glowIntensity =
                         0.4 + Math.sin(Date.now() * 0.003 + i) * 0.2;
-                    effectsCtx.strokeStyle = `rgba(255, 215, 0, ${glowIntensity})`;
+
+                    // Change glow lines color based on hover state
+                    if (bulb.isHovered) {
+                        effectsCtx.strokeStyle = `rgba(135, 206, 235, ${glowIntensity})`; // Purple glow when hovered
+                    } else {
+                        effectsCtx.strokeStyle = `rgba(255, 215, 0, ${glowIntensity})`; // Gold glow normally
+                    }
+
                     effectsCtx.lineWidth = 2;
 
                     // Draw 3 concentric circles with varying radii for glow effect - scaled up
@@ -545,17 +614,16 @@
                         effectsCtx.stroke();
                     }
 
-                    // MODIFIED: Draw binary digits in the center of the bulb with black color
-                    // Split the binary string into individual digits
-                    const digits = bulb.binaryStr.split("");
-
-                    // Draw each digit in a vertical stack
-                    effectsCtx.fillStyle = "purple"; // Black color
+                    // Draw binary digits with color based on hover state
+                    effectsCtx.fillStyle = bulb.isHovered
+                        ? "#FFD700"
+                        : "purple"; // Gold text if hovered, purple normally
                     effectsCtx.font = "bold 20px monospace"; // Monospace font for binary digits
                     effectsCtx.textAlign = "center";
                     effectsCtx.textBaseline = "middle";
 
                     // Position the digits vertically inside the bulb
+                    const digits = bulb.binaryStr.split("");
                     effectsCtx.fillText(
                         digits[0],
                         bulb.position.x,
