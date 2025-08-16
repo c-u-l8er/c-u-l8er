@@ -50,17 +50,73 @@
                 width: 100%;
                 height: 100vh;
             }
-            .overlay {
+            .card-container {
                 position: absolute;
-                color: #fff;
                 z-index: 100;
-                text-align: center;
-                transition: transform 0.2s ease-out;
-                background-color: rgba(0, 0, 0, 0.5);
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 0 20px rgba(128, 0, 128, 0.5); /* Purple box shadow */
                 max-width: 450px;
+                width: 100%;
+                height: 450px;
+                padding: 20px;
+            }
+
+            .card-wrapper {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                perspective: 1200px;
+            }
+
+            .card {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                transform-style: preserve-3d;
+                transition: transform 0.6s ease-in-out;
+                cursor: pointer;
+            }
+
+            .card.flipped {
+                transform: rotateY(180deg);
+            }
+
+            .card-front,
+            .card-back {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .card-front {
+                background-color: transparent;
+                box-shadow: none;
+                padding: 20px;
+            }
+
+            .card-back {
+                background-color: rgba(0, 0, 0, 0.5);
+                box-shadow: 0 0 20px rgba(128, 0, 128, 0.5);
+                transform: rotateY(180deg);
+                padding: 20px;
+            }
+
+            .logo-image {
+                max-width: 100%;
+                max-height: 100%;
+                width: 400px;
+                height: 400px;
+                object-fit: contain;
+                border-radius: 10px;
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            }
+
+            .overlay-content {
+                color: #fff;
+                text-align: center;
                 width: 100%;
             }
             h1 {
@@ -132,14 +188,23 @@
                 box-shadow: 0 0 15px rgba(128, 0, 128, 0.9); /* More intense glow on hover */
             }
 
-            .button.main,
+            .button.main {
+                background-color: rgba(220, 20, 60, 0.9); /* Red background */
+                color: #fff; /* White text */
+                box-shadow: 0 0 10px rgba(220, 20, 60, 0.7); /* Red glow */
+            }
+
+            .button.main:hover {
+                background-color: rgba(220, 20, 60, 1); /* Brighter red on hover */
+                box-shadow: 0 0 15px rgba(220, 20, 60, 0.9); /* More intense red glow on hover */
+            }
+
             .button.export {
                 background-color: rgba(255, 255, 255, 0.9); /* White background */
                 color: #000; /* Black text */
                 box-shadow: 0 0 10px rgba(255, 255, 255, 0.7); /* White glow */
             }
 
-            .button.main:hover,
             .button.export:hover {
                 background-color: rgba(255, 255, 255, 1); /* Brighter white on hover */
                 box-shadow: 0 0 15px rgba(255, 255, 255, 0.9); /* More intense glow on hover */
@@ -159,44 +224,55 @@
     </head>
     <body>
         <div id="canvas-container">
-            <div class="overlay">
-                <h1>C U L8er</h1>
-                <p>
-                    (Concept Ultra Load-8alancer)<br />
-                </p>
-                <a href="https://brokenrecord.studio" class="button export" target="_blank">EXPORT</a>
-                <a href="https://traaviis.com" class="button main" target="_blank">MAIN</a>
-                <a href="https://ideation.c-u-l8er.link" class="button ideation" target="_blank">IDEATION</a>
-                <br />
-                <a href="https://watermark.wrand.cc" class="button" target="_blank"
-                    >DESIGN</a
-                >
-                <a href="https://wrand.cc" class="button" target="_blank"
-                    >R&D</a
-                >
-                <a href="https://opensentience.org" class="button" target="_blank"
-                    >PRODUCTION</a
-                >
-                <br />
-                <a
-                    href="https://istrav.com"
-                    class="button solution"
-                    target="_blank"
-                    >WEB SOLUTIONS</a
-                >
-                <a
-                    href="https://subvind.com"
-                    class="button solution"
-                    target="_blank"
-                    >COMMUNITY SOLUTIONS</a
-                >
-                <br />
-                <a
-                    href="https://ticktickclock.com"
-                    class="button process"
-                    target="_blank"
-                    >TICK TICK CLOCK</a
-                >
+            <div class="card-container">
+                <div class="card-wrapper">
+                    <div class="card">
+                        <div class="card-front">
+                            <img src="logo.png" alt="C U L8er Logo" class="logo-image" />
+                        </div>
+                        <div class="card-back">
+                            <div class="overlay-content">
+                                <h1>C U L8er</h1>
+                                <p>
+                                    (Concept Ultra Load-8alancer)<br />
+                                </p>
+                                <a href="https://brokenrecord.studio" class="button export" target="_blank">EXPORT</a>
+                                <a href="https://traaviis.com" class="button main" target="_blank">MAIN</a>
+                                <a href="https://ideation.c-u-l8er.link" class="button ideation" target="_blank">IDEATION</a>
+                                <br />
+                                <a href="https://watermark.wrand.cc" class="button" target="_blank"
+                                    >DESIGN</a
+                                >
+                                <a href="https://wrand.cc" class="button" target="_blank"
+                                    >R&D</a
+                                >
+                                <a href="https://opensentience.org" class="button" target="_blank"
+                                    >PRODUCTION</a
+                                >
+                                <br />
+                                <a
+                                    href="https://istrav.com"
+                                    class="button solution"
+                                    target="_blank"
+                                    >WEB SOLUTIONS</a
+                                >
+                                <a
+                                    href="https://subvind.com"
+                                    class="button solution"
+                                    target="_blank"
+                                    >COMMUNITY SOLUTIONS</a
+                                >
+                                <br />
+                                <a
+                                    href="https://ticktickclock.com"
+                                    class="button process"
+                                    target="_blank"
+                                    >TICK TICK CLOCK</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -356,10 +432,65 @@
                 Composite.add(world, lightbulb);
             }
 
-            // Setup for the bouncing overlay
-            const overlay = document.querySelector(".overlay");
-            const overlayWidth = overlay.offsetWidth;
-            const overlayHeight = overlay.offsetHeight;
+            // Setup for the bouncing card
+            const cardContainer = document.querySelector(".card-container");
+            const card = document.querySelector(".card");
+            const overlayWidth = cardContainer.offsetWidth;
+            const overlayHeight = cardContainer.offsetHeight;
+
+            // Card flip control
+            let isFlipped = false;
+            let canFlip = true;
+            const flipCooldown = 700; // Slightly longer than animation duration
+
+            // Add card flip event listeners
+            cardContainer.addEventListener("mouseenter", function() {
+                if (canFlip && !isFlipped) {
+                    isFlipped = true;
+                    canFlip = false;
+                    card.classList.add("flipped");
+                    
+                    // Re-enable flipping after animation completes
+                    setTimeout(() => {
+                        canFlip = true;
+                    }, flipCooldown);
+                }
+            });
+
+            cardContainer.addEventListener("mouseleave", function() {
+                // Add a small delay before allowing flip back to prevent accidental toggling
+                setTimeout(() => {
+                    if (canFlip && isFlipped) {
+                        isFlipped = false;
+                        canFlip = false;
+                        card.classList.remove("flipped");
+                        
+                        // Re-enable flipping after animation completes
+                        setTimeout(() => {
+                            canFlip = true;
+                        }, flipCooldown);
+                    }
+                }, 100);
+            });
+
+            // Alternative: Click to flip (more stable)
+            cardContainer.addEventListener("click", function() {
+                if (canFlip) {
+                    isFlipped = !isFlipped;
+                    canFlip = false;
+                    
+                    if (isFlipped) {
+                        card.classList.add("flipped");
+                    } else {
+                        card.classList.remove("flipped");
+                    }
+                    
+                    // Re-enable flipping after animation completes
+                    setTimeout(() => {
+                        canFlip = true;
+                    }, flipCooldown);
+                }
+            });
 
             // Initial position and velocity for the overlay
             let overlayX = Math.random() * (window.innerWidth - overlayWidth);
@@ -368,8 +499,8 @@
             let overlayVY = 0.5; // Y velocity
 
             // Apply initial position
-            overlay.style.left = `${overlayX}px`;
-            overlay.style.top = `${overlayY}px`;
+            cardContainer.style.left = `${overlayX}px`;
+            cardContainer.style.top = `${overlayY}px`;
 
             // Star data with direction for movement
             const stars = [];
@@ -484,13 +615,13 @@
                 }
 
                 // Apply the new position
-                overlay.style.left = `${overlayX}px`;
-                overlay.style.top = `${overlayY}px`;
+                cardContainer.style.left = `${overlayX}px`;
+                cardContainer.style.top = `${overlayY}px`;
 
                 // Add a slight rotation based on direction
                 const angle =
                     Math.atan2(overlayVY, overlayVX) * (180 / Math.PI);
-                overlay.style.transform = `rotate(${angle * 0.05}deg)`;
+                cardContainer.style.transform = `rotate(${angle * 0.05}deg)`;
 
                 // Schedule the next update
                 requestAnimationFrame(updateOverlayPosition);
@@ -725,12 +856,12 @@
 
                 if (overlayX > maxX) {
                     overlayX = maxX;
-                    overlay.style.left = `${overlayX}px`;
+                    cardContainer.style.left = `${overlayX}px`;
                 }
 
                 if (overlayY > maxY) {
                     overlayY = maxY;
-                    overlay.style.top = `${overlayY}px`;
+                    cardContainer.style.top = `${overlayY}px`;
                 }
             });
         </script>
