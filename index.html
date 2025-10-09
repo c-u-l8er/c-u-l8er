@@ -220,6 +220,28 @@
                 background-color: rgba(0, 128, 0, 1); /* Brighter green on hover */
                 box-shadow: 0 0 15px rgba(0, 128, 0, 0.9); /* More intense glow on hover */
             }
+
+            .button.control {
+                background-color: rgba(0, 128, 0, 0.7); /* Green background */
+                color: #fff; /* White text */
+                box-shadow: 0 0 10px rgba(0, 128, 0, 0.7); /* Green glow */
+            }
+
+            .button.control:hover {
+                background-color: rgba(0, 128, 0, 1); /* Brighter green on hover */
+                box-shadow: 0 0 15px rgba(0, 128, 0, 0.9); /* More intense glow on hover */
+            }
+
+            .button.game {
+                background-color: rgba(128, 128, 128, 0.7); /* Grey background */
+                color: #fff; /* White text */
+                box-shadow: 0 0 10px rgba(128, 128, 128, 0.7); /* Grey glow */
+            }
+
+            .button.game:hover {
+                background-color: rgba(128, 128, 128, 1); /* Brighter grey on hover */
+                box-shadow: 0 0 15px rgba(128, 128, 128, 0.9); /* More intense glow on hover */
+            }
         </style>
     </head>
     <body>
@@ -261,6 +283,13 @@
                                 <br />
                                 <a href="https://bendscript.com" class="button power" target="_blank"
                                     >POWER</a
+                                >
+                                <a href="https://alkeyword.com" class="button control" target="_blank"
+                                    >CONTROL</a
+                                >
+                                <br />
+                                <a href="https://runefort.com" class="button game" target="_blank"
+                                    >GAME</a
                                 >
                             </div>
                         </div>
@@ -703,16 +732,16 @@
 
                     // Set the bulb color based on hover state
                     const currentBulbColor = bulb.isHovered
-                        ? "#800080"
-                        : bulbColor; // Purple if hovered, light blue otherwise
+                        ? "#FF0000"
+                        : bulbColor; // Red if hovered, light blue otherwise
 
                     // Parse color to RGB for glow
                     let r, g, b;
                     if (bulb.isHovered) {
-                        // Purple color when hovered (128, 0, 128)
-                        r = 128;
+                        // Red color when hovered (255, 0, 0)
+                        r = 255;
                         g = 0;
-                        b = 128;
+                        b = 0;
                     } else {
                         // Original light blue color
                         r = 135;
@@ -757,7 +786,7 @@
                     );
 
                     // Draw a metal base using SVG path
-                    effectsCtx.fillStyle = "#777";
+                    effectsCtx.fillStyle = bulb.isHovered ? "rgba(0, 128, 0, 1)" : "#777"; // Same green as CONTROL button if hovered, grey normally
                     drawPath(
                         effectsCtx,
                         lightbulbSVG.basePath,
@@ -771,7 +800,7 @@
 
                     // Change glow lines color based on hover state
                     if (bulb.isHovered) {
-                        effectsCtx.strokeStyle = `rgba(135, 206, 235, ${glowIntensity})`; // Purple glow when hovered
+                        effectsCtx.strokeStyle = `rgba(128, 128, 128, ${glowIntensity})`; // Grey glow when hovered
                     } else {
                         effectsCtx.strokeStyle = `rgba(255, 215, 0, ${glowIntensity})`; // Gold glow normally
                     }
@@ -793,8 +822,8 @@
 
                     // Draw binary digits with color based on hover state
                     effectsCtx.fillStyle = bulb.isHovered
-                        ? "#FFD700"
-                        : "purple"; // Gold text if hovered, purple normally
+                        ? "#FFFF00"
+                        : "purple"; // Yellow text if hovered, purple normally
                     effectsCtx.font = "bold 20px monospace"; // Monospace font for binary digits
                     effectsCtx.textAlign = "center";
                     effectsCtx.textBaseline = "middle";
