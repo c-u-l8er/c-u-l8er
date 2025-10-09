@@ -242,6 +242,17 @@
                 background-color: rgba(128, 128, 128, 1); /* Brighter grey on hover */
                 box-shadow: 0 0 15px rgba(128, 128, 128, 0.9); /* More intense glow on hover */
             }
+
+            .button.rnd {
+                background-color: rgba(139, 69, 19, 0.7); /* Brown background */
+                color: #fff; /* White text */
+                box-shadow: 0 0 10px rgba(139, 69, 19, 0.7); /* Brown glow */
+            }
+
+            .button.rnd:hover {
+                background-color: rgba(139, 69, 19, 1); /* Brighter brown on hover */
+                box-shadow: 0 0 15px rgba(139, 69, 19, 0.9); /* More intense glow on hover */
+            }
         </style>
     </head>
     <body>
@@ -263,7 +274,7 @@
                                 <a href="https://ampersandboxdesign.com" class="button" target="_blank"
                                     >DESIGN</a
                                 >
-                                <a href="https://wrand.cc" class="button" target="_blank"
+                                <a href="https://wrand.cc" class="button rnd" target="_blank"
                                     >R&D</a
                                 >
                                 <br />
@@ -704,9 +715,9 @@
                             // Adjust opacity based on distance
                             const opacity = 1 - distance / connectionDistance;
 
-                            // MODIFIED: Changed connections to gold
-                            effectsCtx.strokeStyle = `rgba(255, 215, 0, ${opacity * 0.7})`;
-                            effectsCtx.lineWidth = 3; // Slightly thicker gold lines
+                            // MODIFIED: Changed connections to brown
+                            effectsCtx.strokeStyle = `rgba(139, 69, 19, ${opacity * 0.7})`;
+                            effectsCtx.lineWidth = 3; // Slightly thicker brown lines
                             effectsCtx.beginPath();
                             effectsCtx.moveTo(
                                 bulb1.position.x,
