@@ -315,6 +315,11 @@
             let mouseY = 0;
             let hoveredBulb = null;
             let isMouseDown = false;
+            let clickedBulb = null; // Track the clicked/dragged bulb
+            let isDragging = false; // Track if we're currently dragging
+            let stationaryBulb = null; // Track the stationary bulb that attracts others
+            let dragOffsetX = 0; // Offset for dragging
+            let dragOffsetY = 0; // Offset for dragging
 
             // Create a canvas for stars and effects
             const effectsCanvas = document.createElement("canvas");
@@ -334,6 +339,17 @@
             effectsCanvas.addEventListener("mousemove", function (event) {
                 mouseX = event.clientX;
                 mouseY = event.clientY;
+
+                // Handle dragging - only move the stationary bulb when explicitly dragging
+                if (isDragging && clickedBulb && clickedBulb === stationaryBulb) {
+                    // Update the dragged bulb position to follow mouse
+                    Body.setPosition(clickedBulb, {
+                        x: mouseX - dragOffsetX,
+                        y: mouseY - dragOffsetY
+                    });
+                    // Ensure velocity remains zero while dragging
+                    Body.setVelocity(clickedBulb, { x: 0, y: 0 });
+                }
 
                 // Check if mouse is over any lightbulb
                 hoveredBulb = null;
@@ -357,12 +373,40 @@
 
             effectsCanvas.addEventListener("mousedown", function () {
                 isMouseDown = true;
+                if (hoveredBulb) {
+                    clickedBulb = hoveredBulb;
+                    
+                    // Check if this is the first click on this bulb (make it stationary)
+                    if (stationaryBulb !== clickedBulb) {
+                        // If there was a previous stationary bulb, restore its movement
+                        if (stationaryBulb) {
+                            Body.setVelocity(stationaryBulb, {
+                                x: (Math.random() - 0.5) * 3,
+                                y: (Math.random() - 0.5) * 3,
+                            });
+                        }
+                        
+                        // Make this bulb stationary
+                        stationaryBulb = clickedBulb;
+                        Body.setVelocity(clickedBulb, { x: 0, y: 0 });
+                        
+                        // Calculate drag offset for smooth dragging
+                        dragOffsetX = mouseX - clickedBulb.position.x;
+                        dragOffsetY = mouseY - clickedBulb.position.y;
+                    } else {
+                        // Second click on the same bulb - start dragging
+                        isDragging = true;
+                        dragOffsetX = mouseX - clickedBulb.position.x;
+                        dragOffsetY = mouseY - clickedBulb.position.y;
+                    }
+                }
             });
 
             effectsCanvas.addEventListener("mouseup", function () {
-                if (isMouseDown && hoveredBulb) {
-                    // Open link when lightbulb is clicked
-                    window.location.href = "https://lifecycle.c-u-l8er.link";
+                if (isDragging && clickedBulb) {
+                    // Stop dragging but keep the bulb stationary
+                    isDragging = false;
+                    Body.setVelocity(clickedBulb, { x: 0, y: 0 });
                 }
                 isMouseDown = false;
             });
@@ -550,16 +594,91 @@
                 });
             }
 
-            // Add before update event to handle wrap-around
+            // Add before update event to handle wrap-around and gravitational effects
             Events.on(engine, "beforeUpdate", function () {
                 const width = window.innerWidth;
                 const height = window.innerHeight;
+
+                // Apply gravitational forces
+                for (let i = 0; i < lightbulbs.length; i++) {
+                    const bulb = lightbulbs[i];
+                    
+                    // Skip all physics for stationary bulb - it should be completely static
+                    if (bulb === stationaryBulb) {
+                        // Ensure stationary bulb has zero velocity at all times
+                        Body.setVelocity(bulb, { x: 0, y: 0 });
+                        continue;
+                    }
+                    
+                    // Apply gravitational attraction to stationary bulb or mouse
+                    if (stationaryBulb) {
+                        const dx = stationaryBulb.position.x - bulb.position.x;
+                        const dy = stationaryBulb.position.y - bulb.position.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 0 && distance < 300) { // Reduced gravitational range
+                            // Much weaker force with better damping at close range
+                            const force = Math.min(0.0002 * (300 - distance) / distance, 0.01);
+                            
+                            // Apply force with velocity damping to prevent chaos
+                            Body.applyForce(bulb, bulb.position, {
+                                x: dx * force,
+                                y: dy * force
+                            });
+                            
+                            // Add velocity damping when close to stationary bulb
+                            if (distance < 100) {
+                                const velocity = bulb.velocity;
+                                const damping = 0.95;
+                                Body.setVelocity(bulb, {
+                                    x: velocity.x * damping,
+                                    y: velocity.y * damping
+                                });
+                            }
+                        }
+                    } else if (isMouseDown) {
+                        // Apply gravitational attraction to mouse when clicking
+                        const dx = mouseX - bulb.position.x;
+                        const dy = mouseY - bulb.position.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 0 && distance < 200) { // Reduced range for mouse attraction
+                            const force = Math.min(0.0001 * (200 - distance) / distance, 0.005);
+                            Body.applyForce(bulb, bulb.position, {
+                                x: dx * force,
+                                y: dy * force
+                            });
+                        }
+                    }
+                    
+                    // Apply gentle orbital motion around stationary bulb
+                    if (stationaryBulb && bulb !== stationaryBulb) {
+                        const dx = stationaryBulb.position.x - bulb.position.x;
+                        const dy = stationaryBulb.position.y - bulb.position.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 80 && distance < 250) { // Reduced orbital range
+                            // Calculate perpendicular force for orbital motion
+                            const perpX = -dy / distance;
+                            const perpY = dx / distance;
+                            const orbitalForce = 0.0005; // Much weaker orbital force
+                            
+                            Body.applyForce(bulb, bulb.position, {
+                                x: perpX * orbitalForce,
+                                y: perpY * orbitalForce
+                            });
+                        }
+                    }
+                }
 
                 // Check each lightbulb position and wrap if needed
                 for (let i = 0; i < lightbulbs.length; i++) {
                     const bulb = lightbulbs[i];
                     const bulbX = bulb.position.x;
                     const bulbY = bulb.position.y;
+
+                    // Skip all position maintenance for stationary bulb
+                    if (bulb === stationaryBulb) continue;
 
                     // Wrap horizontally - adjusted for larger size
                     if (bulbX < -120) {
@@ -588,10 +707,23 @@
                     }
 
                     // Maintain constant velocity (to counteract any slowdowns)
+                    // Skip for stationary bulb
+                    if (bulb === stationaryBulb) continue;
+                    
                     const velocity = bulb.velocity;
                     const speed = Math.sqrt(
                         velocity.x * velocity.x + velocity.y * velocity.y,
                     );
+
+                    // Limit maximum speed to prevent chaos
+                    const maxSpeed = 4;
+                    if (speed > maxSpeed) {
+                        const scale = maxSpeed / speed;
+                        Body.setVelocity(bulb, {
+                            x: velocity.x * scale,
+                            y: velocity.y * scale,
+                        });
+                    }
 
                     // Only boost if speed drops below original level
                     if (speed < 2) {
@@ -740,15 +872,28 @@
 
                     // Check if this bulb is being hovered over
                     bulb.isHovered = hoveredBulb === bulb;
+                    
+                    // Check if this is the stationary bulb
+                    const isStationary = bulb === stationaryBulb;
 
-                    // Set the bulb color based on hover state
-                    const currentBulbColor = bulb.isHovered
-                        ? "#FF0000"
-                        : bulbColor; // Red if hovered, light blue otherwise
+                    // Set the bulb color based on state
+                    let currentBulbColor;
+                    if (isStationary) {
+                        currentBulbColor = "#FFD700"; // Gold for stationary bulb
+                    } else if (bulb.isHovered) {
+                        currentBulbColor = "#FF0000"; // Red if hovered
+                    } else {
+                        currentBulbColor = bulbColor; // Light blue otherwise
+                    }
 
                     // Parse color to RGB for glow
                     let r, g, b;
-                    if (bulb.isHovered) {
+                    if (isStationary) {
+                        // Gold color (255, 215, 0)
+                        r = 255;
+                        g = 215;
+                        b = 0;
+                    } else if (bulb.isHovered) {
                         // Red color when hovered (255, 0, 0)
                         r = 255;
                         g = 0;
@@ -767,12 +912,13 @@
                         12.5, // Scaled up
                         bulb.position.x,
                         bulb.position.y,
-                        100, // Scaled up
+                        isStationary ? 150 : 100, // Larger glow for stationary bulb
                     );
 
+                    const glowMultiplier = isStationary ? 1.5 : 1.0; // Stronger glow for stationary bulb
                     gradient.addColorStop(
                         0,
-                        `rgba(${r}, ${g}, ${b}, ${0.7 * intensity * bulb.glowIntensity})`,
+                        `rgba(${r}, ${g}, ${b}, ${0.7 * intensity * bulb.glowIntensity * glowMultiplier})`,
                     );
                     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
@@ -781,13 +927,13 @@
                     effectsCtx.arc(
                         bulb.position.x,
                         bulb.position.y,
-                        100, // Scaled up
+                        isStationary ? 150 : 100, // Larger glow for stationary bulb
                         0,
                         Math.PI * 2,
                     );
                     effectsCtx.fill();
 
-                    // Draw glass bulb using SVG path - using current color based on hover state
+                    // Draw glass bulb using SVG path - using current color based on state
                     effectsCtx.fillStyle = currentBulbColor;
                     drawPath(
                         effectsCtx,
@@ -797,7 +943,15 @@
                     );
 
                     // Draw a metal base using SVG path
-                    effectsCtx.fillStyle = bulb.isHovered ? "rgba(0, 128, 0, 1)" : "#777"; // Same green as CONTROL button if hovered, grey normally
+                    let baseColor;
+                    if (isStationary) {
+                        baseColor = "#FFD700"; // Gold base for stationary bulb
+                    } else if (bulb.isHovered) {
+                        baseColor = "rgba(0, 128, 0, 1)"; // Green if hovered
+                    } else {
+                        baseColor = "#777"; // Grey normally
+                    }
+                    effectsCtx.fillStyle = baseColor;
                     drawPath(
                         effectsCtx,
                         lightbulbSVG.basePath,
@@ -805,21 +959,27 @@
                         bulb.position.y,
                     );
 
-                    // Add golden glow lines around the bulb - scaled up
+                    // Add glow lines around the bulb - scaled up
                     const glowIntensity =
                         0.4 + Math.sin(Date.now() * 0.003 + i) * 0.2;
 
-                    // Change glow lines color based on hover state
-                    if (bulb.isHovered) {
-                        effectsCtx.strokeStyle = `rgba(128, 128, 128, ${glowIntensity})`; // Grey glow when hovered
+                    // Change glow lines color based on state
+                    let glowColor;
+                    if (isStationary) {
+                        glowColor = `rgba(255, 215, 0, ${glowIntensity * 1.5})`; // Bright gold for stationary
+                    } else if (bulb.isHovered) {
+                        glowColor = `rgba(128, 128, 128, ${glowIntensity})`; // Grey glow when hovered
                     } else {
-                        effectsCtx.strokeStyle = `rgba(255, 215, 0, ${glowIntensity})`; // Gold glow normally
+                        glowColor = `rgba(255, 215, 0, ${glowIntensity})`; // Gold glow normally
                     }
 
-                    effectsCtx.lineWidth = 2;
+                    effectsCtx.strokeStyle = glowColor;
+                    effectsCtx.lineWidth = isStationary ? 3 : 2; // Thicker lines for stationary bulb
 
                     // Draw 3 concentric circles with varying radii for glow effect - scaled up
-                    for (let radius = 62.5; radius <= 87.5; radius += 12.5) {
+                    const baseRadius = isStationary ? 75 : 62.5; // Larger radius for stationary bulb
+                    const maxRadius = isStationary ? 100 : 87.5; // Larger max radius for stationary bulb
+                    for (let radius = baseRadius; radius <= maxRadius; radius += 12.5) {
                         effectsCtx.beginPath();
                         effectsCtx.arc(
                             bulb.position.x,
@@ -831,20 +991,28 @@
                         effectsCtx.stroke();
                     }
 
-                    // Draw binary digits with color based on hover state
-                    effectsCtx.fillStyle = bulb.isHovered
-                        ? "#FFFF00"
-                        : "purple"; // Yellow text if hovered, purple normally
-                    effectsCtx.font = "bold 20px monospace"; // Monospace font for binary digits
+                    // Draw binary digits with color based on state
+                    let textColor;
+                    if (isStationary) {
+                        textColor = "#FF0000"; // Red text for stationary bulb
+                    } else if (bulb.isHovered) {
+                        textColor = "#FFFF00"; // Yellow text if hovered
+                    } else {
+                        textColor = "purple"; // Purple normally
+                    }
+                    
+                    effectsCtx.fillStyle = textColor;
+                    effectsCtx.font = isStationary ? "bold 24px monospace" : "bold 20px monospace"; // Larger font for stationary bulb
                     effectsCtx.textAlign = "center";
                     effectsCtx.textBaseline = "middle";
 
                     // Position the digits vertically inside the bulb
                     const digits = bulb.binaryStr.split("");
+                    const yOffset = isStationary ? 18 : 15; // Slightly larger spacing for stationary bulb
                     effectsCtx.fillText(
                         digits[0],
                         bulb.position.x,
-                        bulb.position.y - 15,
+                        bulb.position.y - yOffset,
                     );
                     effectsCtx.fillText(
                         digits[1],
@@ -854,7 +1022,7 @@
                     effectsCtx.fillText(
                         digits[2],
                         bulb.position.x,
-                        bulb.position.y + 15,
+                        bulb.position.y + yOffset,
                     );
                 }
 
