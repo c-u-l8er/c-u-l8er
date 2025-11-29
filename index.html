@@ -195,18 +195,33 @@
             }
 
             .button.main:hover {
-                background-color: rgba(220, 20, 60, 1); /* Brighter red on hover */
+                background-color: rgba(
+                    220,
+                    20,
+                    60,
+                    1
+                ); /* Brighter red on hover */
                 box-shadow: 0 0 15px rgba(220, 20, 60, 0.9); /* More intense red glow on hover */
             }
 
             .button.export {
-                background-color: rgba(255, 255, 255, 0.9); /* White background */
+                background-color: rgba(
+                    255,
+                    255,
+                    255,
+                    0.9
+                ); /* White background */
                 color: #000; /* Black text */
                 box-shadow: 0 0 10px rgba(255, 255, 255, 0.7); /* White glow */
             }
 
             .button.export:hover {
-                background-color: rgba(255, 255, 255, 1); /* Brighter white on hover */
+                background-color: rgba(
+                    255,
+                    255,
+                    255,
+                    1
+                ); /* Brighter white on hover */
                 box-shadow: 0 0 15px rgba(255, 255, 255, 0.9); /* More intense glow on hover */
             }
 
@@ -217,29 +232,49 @@
             }
 
             .button.ideation:hover {
-                background-color: rgba(0, 128, 0, 1); /* Brighter green on hover */
+                background-color: rgba(
+                    0,
+                    128,
+                    0,
+                    1
+                ); /* Brighter green on hover */
                 box-shadow: 0 0 15px rgba(0, 128, 0, 0.9); /* More intense glow on hover */
             }
 
-            .button.control {
+            .button.agentic {
                 background-color: rgba(0, 128, 0, 0.7); /* Green background */
                 color: #fff; /* White text */
                 box-shadow: 0 0 10px rgba(0, 128, 0, 0.7); /* Green glow */
             }
 
-            .button.control:hover {
-                background-color: rgba(0, 128, 0, 1); /* Brighter green on hover */
+            .button.agentic:hover {
+                background-color: rgba(
+                    0,
+                    128,
+                    0,
+                    1
+                ); /* Brighter green on hover */
                 box-shadow: 0 0 15px rgba(0, 128, 0, 0.9); /* More intense glow on hover */
             }
 
             .button.game {
-                background-color: rgba(128, 128, 128, 0.7); /* Grey background */
+                background-color: rgba(
+                    128,
+                    128,
+                    128,
+                    0.7
+                ); /* Grey background */
                 color: #fff; /* White text */
                 box-shadow: 0 0 10px rgba(128, 128, 128, 0.7); /* Grey glow */
             }
 
             .button.game:hover {
-                background-color: rgba(128, 128, 128, 1); /* Brighter grey on hover */
+                background-color: rgba(
+                    128,
+                    128,
+                    128,
+                    1
+                ); /* Brighter grey on hover */
                 box-shadow: 0 0 15px rgba(128, 128, 128, 0.9); /* More intense glow on hover */
             }
 
@@ -250,7 +285,12 @@
             }
 
             .button.rnd:hover {
-                background-color: rgba(139, 69, 19, 1); /* Brighter brown on hover */
+                background-color: rgba(
+                    139,
+                    69,
+                    19,
+                    1
+                ); /* Brighter brown on hover */
                 box-shadow: 0 0 15px rgba(139, 69, 19, 0.9); /* More intense glow on hover */
             }
         </style>
@@ -261,20 +301,33 @@
                 <div class="card-wrapper">
                     <div class="card">
                         <div class="card-front">
-                            <img src="logo.png" alt="C U L8er Logo" class="logo-image" />
+                            <img
+                                src="logo.png"
+                                alt="C U L8er Logo"
+                                class="logo-image"
+                            />
                         </div>
                         <div class="card-back">
                             <div class="overlay-content">
                                 <h1>C U L8er</h1>
-                                <p>
-                                    (Concept Ultra Load-8alancer)<br />
-                                </p>
-                                <a href="https://traaviis.com" class="button main" target="_blank">INTELLIGENCE</a>
+                                <p>(Concept Ultra Load-8alancer)<br /></p>
+                                <a
+                                    href="https://traaviis.com"
+                                    class="button main"
+                                    target="_blank"
+                                    >INTELLIGENCE</a
+                                >
                                 <br />
-                                <a href="https://ampersandboxdesign.com" class="button" target="_blank"
+                                <a
+                                    href="https://ampersandboxdesign.com"
+                                    class="button"
+                                    target="_blank"
                                     >DESIGN</a
                                 >
-                                <a href="https://wrand.cc" class="button rnd" target="_blank"
+                                <a
+                                    href="https://wrand.cc"
+                                    class="button rnd"
+                                    target="_blank"
                                     >R&D</a
                                 >
                                 <br />
@@ -292,14 +345,23 @@
                                     >COMMUNITY SOLUTIONS</a
                                 >
                                 <br />
-                                <a href="https://brokenrecord.studio" class="button control" target="_blank"
-                                    >CONTROL</a
+                                <a
+                                    href="https://brokenrecord.studio"
+                                    class="button agentic"
+                                    target="_blank"
+                                    >AGENTIC</a
                                 >
-                                <a href="https://bendscript.com" class="button power" target="_blank"
+                                <a
+                                    href="https://bendscript.com"
+                                    class="button power"
+                                    target="_blank"
                                     >POWER</a
                                 >
                                 <br />
-                                <a href="https://runefort.com" class="button game" target="_blank"
+                                <a
+                                    href="https://runefort.com"
+                                    class="button game"
+                                    target="_blank"
                                     >GAME</a
                                 >
                             </div>
@@ -341,11 +403,15 @@
                 mouseY = event.clientY;
 
                 // Handle dragging - only move the stationary bulb when explicitly dragging
-                if (isDragging && clickedBulb && clickedBulb === stationaryBulb) {
+                if (
+                    isDragging &&
+                    clickedBulb &&
+                    clickedBulb === stationaryBulb
+                ) {
                     // Update the dragged bulb position to follow mouse
                     Body.setPosition(clickedBulb, {
                         x: mouseX - dragOffsetX,
-                        y: mouseY - dragOffsetY
+                        y: mouseY - dragOffsetY,
                     });
                     // Ensure velocity remains zero while dragging
                     Body.setVelocity(clickedBulb, { x: 0, y: 0 });
@@ -375,7 +441,7 @@
                 isMouseDown = true;
                 if (hoveredBulb) {
                     clickedBulb = hoveredBulb;
-                    
+
                     // Check if this is the first click on this bulb (make it stationary)
                     if (stationaryBulb !== clickedBulb) {
                         // If there was a previous stationary bulb, restore its movement
@@ -385,11 +451,11 @@
                                 y: (Math.random() - 0.5) * 3,
                             });
                         }
-                        
+
                         // Make this bulb stationary
                         stationaryBulb = clickedBulb;
                         Body.setVelocity(clickedBulb, { x: 0, y: 0 });
-                        
+
                         // Calculate drag offset for smooth dragging
                         dragOffsetX = mouseX - clickedBulb.position.x;
                         dragOffsetY = mouseY - clickedBulb.position.y;
@@ -521,12 +587,12 @@
             const flipCooldown = 700; // Slightly longer than animation duration
 
             // Add card flip event listeners
-            cardContainer.addEventListener("mouseenter", function() {
+            cardContainer.addEventListener("mouseenter", function () {
                 if (canFlip && !isFlipped) {
                     isFlipped = true;
                     canFlip = false;
                     card.classList.add("flipped");
-                    
+
                     // Re-enable flipping after animation completes
                     setTimeout(() => {
                         canFlip = true;
@@ -534,14 +600,14 @@
                 }
             });
 
-            cardContainer.addEventListener("mouseleave", function() {
+            cardContainer.addEventListener("mouseleave", function () {
                 // Add a small delay before allowing flip back to prevent accidental toggling
                 setTimeout(() => {
                     if (canFlip && isFlipped) {
                         isFlipped = false;
                         canFlip = false;
                         card.classList.remove("flipped");
-                        
+
                         // Re-enable flipping after animation completes
                         setTimeout(() => {
                             canFlip = true;
@@ -551,17 +617,17 @@
             });
 
             // Alternative: Click to flip (more stable)
-            cardContainer.addEventListener("click", function() {
+            cardContainer.addEventListener("click", function () {
                 if (canFlip) {
                     isFlipped = !isFlipped;
                     canFlip = false;
-                    
+
                     if (isFlipped) {
                         card.classList.add("flipped");
                     } else {
                         card.classList.remove("flipped");
                     }
-                    
+
                     // Re-enable flipping after animation completes
                     setTimeout(() => {
                         canFlip = true;
@@ -602,37 +668,41 @@
                 // Apply gravitational forces
                 for (let i = 0; i < lightbulbs.length; i++) {
                     const bulb = lightbulbs[i];
-                    
+
                     // Skip all physics for stationary bulb - it should be completely static
                     if (bulb === stationaryBulb) {
                         // Ensure stationary bulb has zero velocity at all times
                         Body.setVelocity(bulb, { x: 0, y: 0 });
                         continue;
                     }
-                    
+
                     // Apply gravitational attraction to stationary bulb or mouse
                     if (stationaryBulb) {
                         const dx = stationaryBulb.position.x - bulb.position.x;
                         const dy = stationaryBulb.position.y - bulb.position.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (distance > 0 && distance < 300) { // Reduced gravitational range
+
+                        if (distance > 0 && distance < 300) {
+                            // Reduced gravitational range
                             // Much weaker force with better damping at close range
-                            const force = Math.min(0.0002 * (300 - distance) / distance, 0.01);
-                            
+                            const force = Math.min(
+                                (0.0002 * (300 - distance)) / distance,
+                                0.01,
+                            );
+
                             // Apply force with velocity damping to prevent chaos
                             Body.applyForce(bulb, bulb.position, {
                                 x: dx * force,
-                                y: dy * force
+                                y: dy * force,
                             });
-                            
+
                             // Add velocity damping when close to stationary bulb
                             if (distance < 100) {
                                 const velocity = bulb.velocity;
                                 const damping = 0.95;
                                 Body.setVelocity(bulb, {
                                     x: velocity.x * damping,
-                                    y: velocity.y * damping
+                                    y: velocity.y * damping,
                                 });
                             }
                         }
@@ -641,31 +711,36 @@
                         const dx = mouseX - bulb.position.x;
                         const dy = mouseY - bulb.position.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (distance > 0 && distance < 200) { // Reduced range for mouse attraction
-                            const force = Math.min(0.0001 * (200 - distance) / distance, 0.005);
+
+                        if (distance > 0 && distance < 200) {
+                            // Reduced range for mouse attraction
+                            const force = Math.min(
+                                (0.0001 * (200 - distance)) / distance,
+                                0.005,
+                            );
                             Body.applyForce(bulb, bulb.position, {
                                 x: dx * force,
-                                y: dy * force
+                                y: dy * force,
                             });
                         }
                     }
-                    
+
                     // Apply gentle orbital motion around stationary bulb
                     if (stationaryBulb && bulb !== stationaryBulb) {
                         const dx = stationaryBulb.position.x - bulb.position.x;
                         const dy = stationaryBulb.position.y - bulb.position.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (distance > 80 && distance < 250) { // Reduced orbital range
+
+                        if (distance > 80 && distance < 250) {
+                            // Reduced orbital range
                             // Calculate perpendicular force for orbital motion
                             const perpX = -dy / distance;
                             const perpY = dx / distance;
                             const orbitalForce = 0.0005; // Much weaker orbital force
-                            
+
                             Body.applyForce(bulb, bulb.position, {
                                 x: perpX * orbitalForce,
-                                y: perpY * orbitalForce
+                                y: perpY * orbitalForce,
                             });
                         }
                     }
@@ -709,7 +784,7 @@
                     // Maintain constant velocity (to counteract any slowdowns)
                     // Skip for stationary bulb
                     if (bulb === stationaryBulb) continue;
-                    
+
                     const velocity = bulb.velocity;
                     const speed = Math.sqrt(
                         velocity.x * velocity.x + velocity.y * velocity.y,
@@ -872,7 +947,7 @@
 
                     // Check if this bulb is being hovered over
                     bulb.isHovered = hoveredBulb === bulb;
-                    
+
                     // Check if this is the stationary bulb
                     const isStationary = bulb === stationaryBulb;
 
@@ -979,7 +1054,11 @@
                     // Draw 3 concentric circles with varying radii for glow effect - scaled up
                     const baseRadius = isStationary ? 75 : 62.5; // Larger radius for stationary bulb
                     const maxRadius = isStationary ? 100 : 87.5; // Larger max radius for stationary bulb
-                    for (let radius = baseRadius; radius <= maxRadius; radius += 12.5) {
+                    for (
+                        let radius = baseRadius;
+                        radius <= maxRadius;
+                        radius += 12.5
+                    ) {
                         effectsCtx.beginPath();
                         effectsCtx.arc(
                             bulb.position.x,
@@ -1000,9 +1079,11 @@
                     } else {
                         textColor = "purple"; // Purple normally
                     }
-                    
+
                     effectsCtx.fillStyle = textColor;
-                    effectsCtx.font = isStationary ? "bold 24px monospace" : "bold 20px monospace"; // Larger font for stationary bulb
+                    effectsCtx.font = isStationary
+                        ? "bold 24px monospace"
+                        : "bold 20px monospace"; // Larger font for stationary bulb
                     effectsCtx.textAlign = "center";
                     effectsCtx.textBaseline = "middle";
 
