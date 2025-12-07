@@ -94,6 +94,11 @@ end
 - **[PHASE_2.5_SECURITY_HARDENING.md](PHASE_2.5_SECURITY_HARDENING.md)** - Security hardening guide
 - **[HOMELAB_SECURITY_ANALYSIS.md](HOMELAB_SECURITY_ANALYSIS.md)** - Homelab security analysis
 
+## Examples
+
+- **[lib/examples/](lib/examples/)** - Example topologies demonstrating all DSL features
+- **[lib/examples/README.md](lib/examples/README.md)** - Guide to running and understanding examples
+
 ## Implementation Status
 
 **Current:** Design specification complete  
