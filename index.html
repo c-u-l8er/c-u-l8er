@@ -38,7 +38,34 @@
         <meta name="author" content="Travis Burandt" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
+        <!-- Marked.js for markdown parsing -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+        <!-- Prism.js for syntax highlighting -->
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-elixir.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
         <style>
+            :root {
+                --primary: #6366f1;
+                --primary-dark: #4f46e5;
+                --accent: red;
+                --success: #22c55e;
+                --warning: #f59e0b;
+                --dark: #111;
+                --gray: #333;
+                --light: #f8fafc;
+                --white: #ffffff;
+            }
             body {
                 margin: 0;
                 padding: 0;
@@ -162,7 +189,8 @@
                 margin-left: 20px;
             }
             #main-website-card a {
-                color: #ffcccc;
+                color: red;
+                text-shadow: 2px 2px 4px #999;
             }
 
             .logo-image {
@@ -371,6 +399,248 @@
             .button.fleet:hover {
                 transform: scale(1.1);
             }
+
+            .docs-container {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+                margin-bottom: 4rem;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                background: var(--light);
+                border-radius: 16px;
+                padding: 1.5rem;
+                height: fit-content;
+                position: sticky;
+            }
+
+            .sidebar h3 {
+                font-size: 1rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 1rem;
+                color: var(--dark);
+            }
+
+            .doc-list {
+                list-style: none;
+            }
+
+            .doc-item {
+                margin-bottom: 0.5rem;
+            }
+
+            .doc-link {
+                display: block;
+                padding: 0.75rem 1rem;
+                color: var(--gray);
+                text-decoration: none;
+                border-radius: 8px;
+                transition: all 0.2s;
+                font-size: 0.9rem;
+            }
+
+            .doc-link:hover {
+                background: white;
+                color: var(--primary);
+                transform: translateX(5px);
+            }
+
+            .doc-link.active {
+                background: white;
+                color: var(--primary);
+                font-weight: 600;
+                box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+            }
+
+            /* Content Area */
+            .content {
+                background: grey;
+                border-radius: 16px;
+                padding: 2.5rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                border: 1px solid rgba(99, 102, 241, 0.1);
+            }
+
+            .content h1 {
+                font-size: 2.5rem;
+                font-weight: 800;
+                margin-bottom: 1rem;
+                color: var(--dark);
+            }
+
+            .content h2 {
+                font-size: 1.8rem;
+                font-weight: 700;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                color: var(--dark);
+            }
+
+            .content h3 {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+                color: var(--dark);
+            }
+
+            .content p {
+                margin-bottom: 1rem;
+                color: var(--gray);
+                line-height: 1.7;
+            }
+
+            .content ul,
+            .content ol {
+                margin-bottom: 1rem;
+                padding-left: 2rem;
+            }
+
+            .content li {
+                margin-bottom: 0.5rem;
+                color: var(--gray);
+            }
+
+            .content code {
+                background: var(--light);
+                padding: 0.2rem 0.4rem;
+                border-radius: 4px;
+                font-family: "Monaco", "Courier New", monospace;
+                font-size: 0.9rem;
+                color: var(--primary);
+            }
+
+            .content pre {
+                background: var(--dark);
+                color: white;
+                padding: 1.5rem;
+                border-radius: 8px;
+                overflow-x: auto;
+                margin-bottom: 1rem;
+            }
+
+            .content pre code {
+                background: none;
+                color: inherit;
+                padding: 0;
+            }
+
+            .content blockquote {
+                border-left: 4px solid var(--primary);
+                padding-left: 1rem;
+                margin: 1rem 0;
+                color: var(--gray);
+                font-style: italic;
+            }
+
+            .content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 1rem;
+            }
+
+            .content th,
+            .content td {
+                padding: 0.75rem;
+                text-align: left;
+                border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            }
+
+            .content th {
+                font-weight: 600;
+                color: var(--dark);
+                background: var(--light);
+            }
+
+            /* Prism.js syntax highlighting overrides */
+            .content pre[class*="language-"] {
+                background: #2d2d2d;
+                margin: 1rem 0;
+                padding: 1rem;
+                border-radius: 8px;
+                overflow: auto;
+            }
+
+            .content code[class*="language-"] {
+                background: none;
+                color: inherit;
+                padding: 0;
+                font-family: "Monaco", "Courier New", monospace;
+                font-size: 0.9rem;
+            }
+
+            /* Better table styling */
+            .content table {
+                border-collapse: collapse;
+                width: 100%;
+                margin: 1.5rem 0;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            }
+
+            .content th,
+            .content td {
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            }
+
+            .content th {
+                background: var(--light);
+                font-weight: 600;
+                color: var(--dark);
+            }
+
+            .content tr:last-child td {
+                border-bottom: none;
+            }
+
+            .content tr:hover {
+                background: rgba(99, 102, 241, 0.02);
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .hero h1 {
+                    font-size: 2.5rem;
+                }
+
+                .docs-container {
+                    grid-template-columns: 1fr;
+                }
+
+                .sidebar {
+                    position: static;
+                }
+
+                .nav-menu {
+                    display: none;
+                }
+            }
+
+            /* Loading state */
+            .loading {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 200px;
+                color: var(--gray);
+            }
+
+            /* Error state */
+            .error {
+                background: #fef2f2;
+                border: 1px solid #fecaca;
+                color: #dc2626;
+                padding: 1rem;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+            }
         </style>
     </head>
     <body>
@@ -469,52 +739,259 @@
                     >Source Code</a
                 >
             </nav>
-            <h1>C U L8er - Computer Units Load-8alancer</h1>
-            <section id="docs">
-                <h2>Documentation</h2>
-                <p>Explore the comprehensive documentation for C U L8er:</p>
-                <ul>
-                    <li>
-                        <a href="docs/README.md" target="_blank">README.md</a> -
-                        Quick start guide and features overview
-                    </li>
-                    <li>
-                        <a href="docs/PROJECT_SPEC.md" target="_blank"
-                            >PROJECT_SPEC.md</a
-                        >
-                        - Complete project specification
-                    </li>
-                    <li>
-                        <a href="docs/AI_CODING_PROMPTS.md" target="_blank"
-                            >AI_CODING_PROMPTS.md</a
-                        >
-                        - Phase-by-phase implementation guide
-                    </li>
-                    <li>
-                        <a href="docs/IMPLEMENTATION_GUIDE.md" target="_blank"
-                            >IMPLEMENTATION_GUIDE.md</a
-                        >
-                        - Technical details and architecture
-                    </li>
-                    <li>
-                        <a href="docs/C_U_L8ER_FINAL_SUMMARY.md" target="_blank"
-                            >C_U_L8ER_FINAL_SUMMARY.md</a
-                        >
-                        - Final project summary
-                    </li>
-                </ul>
-                <p>
-                    Source code:
-                    <a
-                        href="https://github.com/c-u-l8er/c-u-l8er"
-                        target="_blank"
-                        >https://github.com/c-u-l8er/c-u-l8er</a
+            <section class="docs-container">
+                <aside class="sidebar">
+                    <h3>Navigation</h3>
+                    <ul
+                        class="doc-list"
+                        id="doc-list"
+                        style="margin-left: -40px"
                     >
-                </p>
+                        <!-- populated by JS -->
+                    </ul>
+                </aside>
+                <main class="content" id="content">
+                    <div class="loading">Loading documentation...</div>
+                </main>
             </section>
         </div>
 
         <script>
+            // Documentation variables
+            let docs = [
+                "docs/README.md",
+                "docs/PROJECT_SPEC.md",
+                "docs/AI_CODING_PROMPTS.md",
+                "docs/IMPLEMENTATION_GUIDE.md",
+                "docs/C_U_L8ER_FINAL_SUMMARY.md",
+            ];
+            let currentDoc = null;
+            let allDocsContent = {};
+
+            // Initialize documentation
+            async function initDocs() {
+                try {
+                    console.log("Initializing documentation...");
+
+                    // Initialize marked.js
+                    if (!initializeMarked()) {
+                        console.warn(
+                            "Marked.js initialization failed, continuing with basic functionality",
+                        );
+                    }
+
+                    // Load all docs
+                    await loadAllDocs();
+                    console.log(
+                        "Documents loaded:",
+                        Object.keys(allDocsContent),
+                    );
+                    renderDocList();
+
+                    // Load first document by default or check URL hash
+                    const hash = window.location.hash.substring(1);
+                    if (hash && docs.includes(hash)) {
+                        loadDocument(hash);
+                    } else if (docs.length > 0) {
+                        loadDocument(docs[0]);
+                    }
+                } catch (error) {
+                    console.error("Error initializing documentation:", error);
+                    showError(
+                        `Failed to initialize documentation: ${error.message}`,
+                    );
+                }
+            }
+
+            // Load all documents
+            async function loadAllDocs() {
+                console.log(`Starting to load ${docs.length} documents...`);
+                let loadedCount = 0;
+                let failedCount = 0;
+
+                for (const doc of docs) {
+                    try {
+                        console.log(`Loading document: ${doc}`);
+                        const response = await fetch(doc);
+                        if (response.ok) {
+                            const content = await response.text();
+                            allDocsContent[doc] = content;
+                            loadedCount++;
+                            console.log(`Successfully loaded ${doc}`);
+                        } else {
+                            console.error(
+                                `Failed to load ${doc}: ${response.status}`,
+                            );
+                            failedCount++;
+                        }
+                    } catch (error) {
+                        console.error(`Error loading ${doc}:`, error);
+                        failedCount++;
+                    }
+                }
+
+                console.log(
+                    `Document loading complete. Loaded: ${loadedCount}, Failed: ${failedCount}`,
+                );
+                if (failedCount > 0) {
+                    showNotification(
+                        `Warning: ${failedCount} documents failed to load.`,
+                        "warning",
+                    );
+                }
+            }
+
+            function renderDocList() {
+                const docList = document.getElementById("doc-list");
+                if (!docList) return;
+
+                docList.innerHTML = "";
+
+                docs.forEach((doc) => {
+                    const li = document.createElement("li");
+                    li.className = "doc-item";
+
+                    const a = document.createElement("a");
+                    a.className = "doc-link";
+                    a.href = "#" + doc;
+                    a.textContent = formatDocTitle(doc);
+                    a.onclick = (e) => {
+                        e.preventDefault();
+                        loadDocument(doc);
+                    };
+
+                    if (currentDoc === doc) {
+                        a.classList.add("active");
+                    }
+
+                    li.appendChild(a);
+                    docList.appendChild(li);
+                });
+            }
+
+            function formatDocTitle(doc) {
+                return doc
+                    .replace("docs/", "")
+                    .replace(".md", "")
+                    .replace(/_/g, " ")
+                    .replace(/-/g, " ");
+            }
+
+            async function loadDocument(doc) {
+                const contentDiv = document.getElementById("content");
+                if (!contentDiv) return;
+
+                currentDoc = doc;
+
+                // Update active link
+                document.querySelectorAll(".doc-link").forEach((link) => {
+                    link.classList.remove("active");
+                    if (link.href.endsWith("#" + doc)) {
+                        link.classList.add("active");
+                    }
+                });
+
+                // Show loading
+                contentDiv.innerHTML =
+                    '<div class="loading">Loading document...</div>';
+
+                try {
+                    const content = allDocsContent[doc];
+                    if (!content) {
+                        throw new Error("Document content not found");
+                    }
+
+                    const htmlContent = markdownToHtml(content);
+                    contentDiv.innerHTML = htmlContent;
+
+                    // Update URL hash
+                    window.location.hash = doc;
+
+                    // Highlight code blocks
+                    if (typeof Prism !== "undefined") {
+                        Prism.highlightAll();
+                    }
+                } catch (error) {
+                    console.error("Error loading document:", error);
+                    contentDiv.innerHTML = `<div class="error">Error loading document: ${error.message}</div>`;
+                }
+            }
+
+            function initializeMarked() {
+                if (typeof marked === "undefined") {
+                    console.error("Marked.js is not loaded");
+                    return false;
+                }
+
+                // Configure marked
+                marked.setOptions({
+                    highlight: function (code, language) {
+                        if (
+                            typeof Prism !== "undefined" &&
+                            Prism.languages[language]
+                        ) {
+                            try {
+                                const highlighted = Prism.highlight(
+                                    code,
+                                    Prism.languages[language],
+                                    language,
+                                );
+                                return `<code class="language-${language}">${highlighted}</code>`;
+                            } catch (e) {
+                                console.warn(
+                                    `Prism highlighting failed for ${language}:`,
+                                    e,
+                                );
+                            }
+                        }
+                        return `<code class="language-${language}">${escapeHtml(code)}</code>`;
+                    },
+                    langPrefix: "language-",
+                    breaks: true,
+                    gfm: true,
+                });
+
+                return true;
+            }
+
+            function markdownToHtml(markdownStr) {
+                if (typeof marked === "undefined") {
+                    console.error(
+                        "Marked.js not available, falling back to plain text",
+                    );
+                    return `<pre>${escapeHtml(markdownStr)}</pre>`;
+                }
+
+                try {
+                    const html = marked.parse(markdownStr);
+                    return html;
+                } catch (error) {
+                    console.error("Error parsing markdown:", error);
+                    return `<div class="error">Error parsing markdown: ${escapeHtml(error.message)}</div>`;
+                }
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement("div");
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function showError(message) {
+                const contentDiv = document.getElementById("content");
+                if (contentDiv) {
+                    contentDiv.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+                }
+            }
+
+            function showNotification(message, type = "info") {
+                // Simple notification - could be enhanced
+                console.log(`[${type.toUpperCase()}] ${message}`);
+            }
+
+            // Call initDocs when the page loads
+            document.addEventListener("DOMContentLoaded", initDocs);
+
             // Add these variables at the top of your script
             let mouseX = 0;
             let mouseY = 0;
