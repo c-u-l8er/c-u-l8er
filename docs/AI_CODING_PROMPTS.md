@@ -4,7 +4,7 @@ Complete phase-by-phase implementation guide for AI coding assistants.
 
 **Project:** C U L8er (Computer Units Load-8alancer)  
 **URL:** https://c-u-l8er.link  
-**Total Duration:** 10 weeks (250-300 hours)
+**Total Duration:** 11 weeks (226-280 hours)
 
 ---
 
@@ -176,6 +176,456 @@ end
 ```
 
 ---
+
+# PHASE 2.5: Security Hardening
+
+**Duration:** Week 4-5 (16-20 hours)  
+**Difficulty:** Medium  
+**Goal:** Add essential security layers for homelab deployments
+
+## Objective
+
+Implement 5 must-have security layers for homelab use:
+1. Encrypted secrets management
+2. Self-signed CA for HTTPS
+3. Basic network zones
+4. Container security (non-root, read-only)
+5. Simple audit logging
+
+## Prerequisites
+
+- Phase 2 complete (Incus integration working)
+- Basic Incus knowledge
+- Understanding of TLS certificates
+
+## Implementation Checklist
+
+### Part 1: Secrets Management (6-8 hours)
+- [ ] Create `CUL8er.Security.Secrets` GenServer
+- [ ] Implement encrypted file backend
+- [ ] Add Mix task `mix c_u_l8er.secret.set/get`
+- [ ] Update DSL to support `secret` macro
+- [ ] Test encryption/decryption
+
+### Part 2: Certificate Management (5-6 hours)
+- [ ] Create `CUL8er.Security.Certificates` module
+- [ ] Implement self-signed CA generation
+- [ ] Add certificate generation for domains
+- [ ] Update DSL for certificates
+- [ ] Test certificate creation and trust
+
+### Part 3: Network Security (3-5 hours)
+- [ ] Create `CUL8er.Security.Network` module
+- [ ] Implement basic firewall zones
+- [ ] Add network policies to DSL
+- [ ] Test zone isolation
+
+### Part 4: Container Security (2-4 hours)
+- [ ] Create `CUL8er.Security.Container` module
+- [ ] Implement non-root user profiles
+- [ ] Add read-only root filesystem
+- [ ] Update DSL security macros
+- [ ] Test container hardening
+
+### Part 5: Audit Logging (2-3 hours)
+- [ ] Create `CUL8er.Security.Audit` GenServer
+- [ ] Implement file-based logging
+- [ ] Add audit events to executor
+- [ ] Test logging functionality
+
+## Key Implementation Points
+
+### Secrets Management
+```elixir
+defmodule CUL8er.Security.Secrets do
+  use GenServer
+
+  def start_link(opts), do: GenServer.start_link(__MODULE__, opts, name: __MODULE__)
+
+  def store(topology, key, value), do: GenServer.call(__MODULE__, {:store, topology, key, value})
+  def retrieve(topology, key), do: GenServer.call(__MODULE__, {:retrieve, topology, key})
+
+  def init(opts) do
+    # Initialize encryption key from env
+    key = System.get_env("MASTER_KEY") || raise "MASTER_KEY not set"
+    {:ok, %{key: key, storage_path: opts[:storage_path] || "~/.c_u_l8er/secrets"}}
+  end
+
+  def handle_call({:store, topology, key, value}, _from, state) do
+    encrypted = encrypt(value, state.key)
+    path = Path.join([state.storage_path, to_string(topology), key <> ".enc"])
+    File.mkdir_p!(Path.dirname(path))
+    File.write!(path, encrypted)
+    {:reply, :ok, state}
+  end
+
+  def handle_call({:retrieve, topology, key}, _from, state) do
+    path = Path.join([state.storage_path, to_string(topology), key <> ".enc"])
+    case File.read(path) do
+      {:ok, encrypted} ->
+        {:ok, decrypt(encrypted, state.key)}
+      {:error, _} ->
+        {:error, :not_found}
+    end
+    |> then(&{:reply, &1, state})
+  end
+
+  defp encrypt(plaintext, key) do
+    # AES-256-CBC encryption
+    :crypto.crypto_one_time(:aes_256_cbc, :base64.decode(key), <<0::128>>, plaintext, true)
+  end
+
+  defp decrypt(ciphertext, key) do
+    # AES-256-CBC decryption
+    :crypto.crypto_one_time(:aes_256_cbc, :base64.decode(key), <<0::128>>, ciphertext, false)
+  end
+end
+```
+
+### Mix Task for Secrets
+```elixir
+defmodule Mix.Tasks.CuL8er.Secret do
+  use Mix.Task
+
+  @shortdoc "Manage secrets"
+  def run(["set", key]) do
+    topology = Mix.Project.config()[:app]  # or from args
+    value = IO.gets("Enter secret value: ") |> String.trim()
+    :ok = CUL8er.Security.Secrets.store(topology, key, value)
+    IO.puts("Secret stored")
+  end
+
+  def run(["get", key]) do
+    topology = Mix.Project.config()[:app]
+    case CUL8er.Security.Secrets.retrieve(topology, key) do
+      {:ok, value} -> IO.puts(value)
+      {:error, _} -> IO.puts("Secret not found")
+    end
+  end
+end
+```
+
+### Certificate Management
+```elixir
+defmodule CUL8er.Security.Certificates.CA do
+  def generate_ca(opts) do
+    # Generate CA private key
+    {:ok, ca_key} = :public_key.generate_key({:rsa, 2048, 65537})
+    
+    # Create CA certificate
+    ca_cert = :public_key.pkix_sign(
+      :public_key.pkix_encode(:Certificate, ca_template(opts), :otp),
+      ca_key
+    )
+    
+    # Save to files
+    File.write!("ca.key", :public_key.pem_encode([{:PrivateKeyInfo, :public_key.pem_entry_encode(:PrivateKeyInfo, ca_key)}]))
+    File.write!("ca.crt", :public_key.pem_encode([{:Certificate, ca_cert, :not_encrypted}]))
+    
+    {:ok, ca_cert, ca_key}
+  end
+
+  def generate_cert(domain, ca_key, ca_cert, opts) do
+    # Generate cert private key
+    {:ok, cert_key} = :public_key.generate_key({:rsa, 2048, 65537})
+    
+    # Create certificate
+    cert = :public_key.pkix_sign(
+      :public_key.pkix_encode(:Certificate, cert_template(domain, opts), :otp),
+      ca_key
+    )
+    
+    # Save to files
+    File.write!("#{domain}.key", :public_key.pem_encode([{:PrivateKeyInfo, :public_key.pem_entry_encode(:PrivateKeyInfo, cert_key)}]))
+    File.write!("#{domain}.crt", :public_key.pem_encode([{:Certificate, cert, :not_encrypted}]))
+    
+    {:ok, cert, cert_key}
+  end
+
+  defp ca_template(opts) do
+    # CA certificate template
+    %{
+      version: :v3,
+      serialNumber: 1,
+      signature: {:sha256WithRSAEncryption, []},
+      issuer: opts[:subject],
+      validity: {:utcTime, {{2023,1,1},{0,0,0}}, {{2033,1,1},{0,0,0}}},
+      subject: opts[:subject],
+      subjectPublicKeyInfo: :public_key.generate_key({:rsa, 2048, 65537}),
+      extensions: [
+        {:basicConstraints, true, true},  # CA:TRUE
+        {:keyUsage, [:digitalSignature, :keyCertSign, :crlSign], true}
+      ]
+    }
+  end
+
+  defp cert_template(domain, opts) do
+    # Server certificate template
+    %{
+      version: :v3,
+      serialNumber: 2,
+      signature: {:sha256WithRSAEncryption, []},
+      issuer: opts[:ca_subject],
+      validity: {:utcTime, {{2023,1,1},{0,0,0}}, {{2024,1,1},{0,0,0}}},
+      subject: {:rdnSequence, [[{:AttributeTypeAndValue, {2,5,4,3}, {:utf8String, domain}}]]},
+      subjectPublicKeyInfo: :public_key.generate_key({:rsa, 2048, 65537}),
+      extensions: [
+        {:basicConstraints, false, false},
+        {:keyUsage, [:digitalSignature, :keyEncipherment], true},
+        {:extendedKeyUsage, [:serverAuth], true},
+        {:subjectAltName, {:dNSName, domain}}
+      ]
+    }
+  end
+end
+```
+
+### Network Security
+```elixir
+defmodule CUL8er.Security.Network do
+  def configure_zones(host, topology) do
+    # Apply firewall rules for zones
+    Enum.each(topology.zones, &create_zone_network(host, &1))
+  end
+
+  defp create_zone_network(host, zone) do
+    # Create Incus network for zone
+    network_name = "cul8er-#{zone.name}"
+    
+    # Incus commands to create network and attach rules
+    commands = [
+      "incus network create #{network_name} --type=bridge",
+      "incus network set #{network_name} ipv4.firewall=true",
+      "incus network set #{network_name} ipv6.firewall=true"
+    ]
+    
+    Enum.each(commands, &System.cmd("ssh", [host.address, &1]))
+  end
+
+  defp apply_zone_rules(host, zone) do
+    # Apply iptables rules for zone isolation
+    rules = [
+      "iptables -A FORWARD -i #{zone.interface} -s #{zone.allow_from} -j ACCEPT",
+      "iptables -A FORWARD -i #{zone.interface} -j DROP"
+    ]
+    
+    Enum.each(rules, &System.cmd("ssh", [host.address, &1]))
+  end
+end
+```
+
+### Container Security
+```elixir
+defmodule CUL8er.Security.Container do
+  def apply_profile(host, container_name, profile) do
+    # Apply security profile to container
+    set_user(host, container_name, profile[:user][:uid], profile[:user][:gid])
+    set_readonly_root(host, container_name)
+    configure_capabilities(host, container_name, profile[:capabilities])
+  end
+
+  defp set_user(host, container, uid, gid) do
+    # Set container to run as non-root
+    System.cmd("ssh", [host.address, "incus config set #{container} raw.idmap 'uid #{uid} 0\ngid #{gid} 0'"])
+    System.cmd("ssh", [host.address, "incus config set #{container} security.idmap.isolated true"])
+  end
+
+  defp set_readonly_root(host, container) do
+    # Make root filesystem read-only
+    System.cmd("ssh", [host.address, "incus config set #{container} security.privileged false"])
+    System.cmd("ssh", [host.address, "incus config set #{container} security.readonly.rootfs true"])
+  end
+
+  defp configure_capabilities(host, container, caps) do
+    # Drop all capabilities except specified
+    System.cmd("ssh", [host.address, "incus config set #{container} security.syscalls.deny_default true"])
+    
+    Enum.each(caps, fn cap ->
+      System.cmd("ssh", [host.address, "incus config set #{container} security.syscalls.allow #{cap}"])
+    end)
+  end
+end
+```
+
+### Audit Logging
+```elixir
+defmodule CUL8er.Security.Audit do
+  use GenServer
+
+  def start_link(opts), do: GenServer.start_link(__MODULE__, opts, name: __MODULE__)
+  def log(event, metadata \\ %{}), do: GenServer.cast(__MODULE__, {:log, event, metadata})
+
+  def init(opts) do
+    log_path = opts[:log_path] || "~/.c_u_l8er/logs/audit.log"
+    File.mkdir_p!(Path.dirname(log_path))
+    {:ok, %{log_path: log_path}}
+  end
+
+  def handle_cast({:log, event, metadata}, state) do
+    timestamp = DateTime.utc_now() |> DateTime.to_iso8601()
+    hostname = get_hostname()
+    log_entry = "#{timestamp} #{hostname} #{event} #{Jason.encode!(metadata)}\n"
+    
+    File.write!(state.log_path, log_entry, [:append])
+    {:noreply, state}
+  end
+
+  defp get_hostname do
+    case :inet.gethostname() do
+      {:ok, hostname} -> to_string(hostname)
+      _ -> "unknown"
+    end
+  end
+end
+```
+
+### Integration with Executor
+```elixir
+defmodule CUL8er.Core.Executor do
+  def deploy(topology, opts) do
+    CUL8er.Security.Audit.log(:deployment_started, %{topology: topology.name})
+    
+    # ... existing deployment logic ...
+    
+    case result do
+      {:ok, _} ->
+        CUL8er.Security.Audit.log(:deployment_completed, %{topology: topology.name})
+      {:error, reason} ->
+        CUL8er.Security.Audit.log(:deployment_failed, %{topology: topology.name, reason: reason})
+    end
+  end
+end
+```
+
+## Testing Strategy
+
+### Unit Tests
+```elixir
+defmodule CUL8er.Security.SecretsTest do
+  use ExUnit.Case, async: true
+
+  setup do
+    # Set up test encryption key
+    key = :base64.encode(:crypto.strong_rand_bytes(32))
+    System.put_env("MASTER_KEY", key)
+    
+    # Start secrets server
+    {:ok, _} = CUL8er.Security.Secrets.start_link(storage_path: "/tmp/test_secrets")
+    
+    on_exit(fn ->
+      System.delete_env("MASTER_KEY")
+      File.rm_rf("/tmp/test_secrets")
+    end)
+    
+    :ok
+  end
+
+  test "stores and retrieves secrets" do
+    assert :ok = CUL8er.Security.Secrets.store(:test, "db_pass", "secret123")
+    assert {:ok, "secret123"} = CUL8er.Security.Secrets.retrieve(:test, "db_pass")
+  end
+
+  test "secrets are encrypted on disk" do
+    CUL8er.Security.Secrets.store(:test, "key", "value")
+    
+    # Check file exists and is not plaintext
+    path = "/tmp/test_secrets/test/key.enc"
+    assert File.exists?(path)
+    content = File.read!(path)
+    refute content == "value"
+  end
+end
+```
+
+### Integration Tests
+```elixir
+defmodule CUL8er.Integration.SecurityTest do
+  use ExUnit.Case
+
+  test "deploys with encrypted secrets" do
+    defmodule TestTopology do
+      use CUL8er
+      
+      topology :test do
+        secrets do
+          backend :encrypted_file
+          storage_path "/tmp/test_secrets"
+        end
+        
+        host :local do
+          address "localhost"
+          platform :arch_linux
+        end
+        
+        resource :test, type: :container, on: :local do
+          environment do
+            secret :TEST_VAR, from: :secret_store, key: "test_var"
+          end
+        end
+      end
+    end
+
+    # Store secret
+    :ok = CUL8er.Security.Secrets.store(:test, "test_var", "secret_value")
+    
+    # Deploy
+    {:ok, _} = TestTopology.deploy(:test)
+    
+    # Verify secret in container
+    {:ok, env} = Incus.exec("test_test", "env")
+    assert env =~ "TEST_VAR=secret_value"
+  end
+
+  test "containers run as non-root" do
+    defmodule TestTopology do
+      use CUL8er
+      
+      topology :test do
+        security do
+          defaults do
+            user uid: 1000, gid: 1000
+          end
+        end
+        
+        host :local do
+          address "localhost"
+          platform :arch_linux
+        end
+        
+        resource :test, type: :container, on: :local do
+        end
+      end
+    end
+
+    {:ok, _} = TestTopology.deploy(:test)
+    
+    # Check container runs as uid 1000
+    {:ok, uid} = Incus.exec("test_test", "id -u")
+    assert uid == "1000"
+  end
+end
+```
+
+## Deliverables
+
+- [ ] `lib/c_u_l8er/security/` modules implemented
+- [ ] Mix tasks for secrets and certificates
+- [ ] DSL extensions for security
+- [ ] Unit and integration tests passing
+- [ ] Documentation updated
+
+## Success Criteria
+
+- [ ] Can store/retrieve encrypted secrets
+- [ ] Self-signed CA generates trusted certificates
+- [ ] Network zones isolate containers
+- [ ] Containers run as non-root with read-only root
+- [ ] Audit log captures deployment events
+- [ ] All security tests pass
+
+## Next Steps
+
+After Phase 2.5, proceed to Phase 3 with secure foundation in place.
 
 # PHASE 3: Deployment Strategies
 

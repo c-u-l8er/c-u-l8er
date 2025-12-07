@@ -259,16 +259,17 @@ c_u_l8er/
 
 ## Timeline Summary
 
-**Total Duration:** 10 weeks (250-300 hours)
+**Total Duration:** 11 weeks (226-280 hours)
 
 - Week 1-2: DSL Foundation
-- Week 3-4: Incus Integration  
-- Week 5-6: Deployment Strategies
-- Week 7-8: Clustering & Observability
-- Week 9-10: Testing & Polish
+- Week 3-4: Incus Integration
+- Week 5: Security Hardening
+- Week 6-7: Deployment Strategies
+- Week 8-9: Clustering & Observability
+- Week 10-11: Testing & Polish
 
 **MVP (Usable):** After Phase 2 (Week 4)  
-**Production-Ready:** After Phase 5 (Week 10)
+**Production-Ready:** After Phase 5 (Week 11)
 
 ## License
 

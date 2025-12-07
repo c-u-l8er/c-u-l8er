@@ -91,6 +91,8 @@ end
 - **[PROJECT_SPEC.md](PROJECT_SPEC.md)** - Complete project specification
 - **[AI_CODING_PROMPTS.md](AI_CODING_PROMPTS.md)** - Phase-by-phase implementation guide
 - **[IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)** - Technical details
+- **[PHASE_2.5_SECURITY_HARDENING.md](PHASE_2.5_SECURITY_HARDENING.md)** - Security hardening guide
+- **[HOMELAB_SECURITY_ANALYSIS.md](HOMELAB_SECURITY_ANALYSIS.md)** - Homelab security analysis
 
 ## Implementation Status
 

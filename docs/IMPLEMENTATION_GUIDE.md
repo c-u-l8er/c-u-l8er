@@ -26,11 +26,12 @@ C U L8er is an Elixir-native deployment system for distributed BEAM applications
 |-------|----------|-------|-------------|
 | **Phase 1** | Weeks 1-2 | Core DSL & macros | Working DSL that parses topologies |
 | **Phase 2** | Weeks 3-4 | Incus integration & state | Real deployments create containers |
-| **Phase 3** | Weeks 5-6 | Deployment strategies | Zero-downtime updates with health checks |
-| **Phase 4** | Weeks 7-8 | Clustering & observability | Automatic node discovery + metrics |
-| **Phase 5** | Weeks 9-10 | Testing & release | Production-ready v0.1.0 |
+| **Phase 2.5** | Week 5 | Security hardening | Essential security layers for homelab |
+| **Phase 3** | Weeks 6-7 | Deployment strategies | Zero-downtime updates with health checks |
+| **Phase 4** | Weeks 8-9 | Clustering & observability | Automatic node discovery + metrics |
+| **Phase 5** | Weeks 10-11 | Testing & release | Production-ready v0.1.0 |
 
-**Total Time:** 200-250 hours (10 weeks part-time or 5 weeks full-time)
+**Total Time:** 226-280 hours (11 weeks part-time or 5-6 weeks full-time)
 
 ---
 
@@ -97,7 +98,30 @@ MyTopology.plan(:production)
 
 ---
 
-### Phase 3: Deployment Strategies & Health Checking (Weeks 5-6)
+### Phase 2.5: Security Hardening (Week 5)
+
+**Files:** [PHASE_2.5_SECURITY_HARDENING.md](PHASE_2.5_SECURITY_HARDENING.md)
+
+**What You Build:**
+Essential security layers for homelab deployments:
+- Encrypted secrets management
+- Self-signed CA for HTTPS
+- Basic network zones
+- Container security (non-root, read-only)
+- Simple audit logging
+
+**Key Deliverables:**
+- ✅ Secrets stored encrypted
+- ✅ HTTPS with valid certificates
+- ✅ Network isolation
+- ✅ Containers hardened
+- ✅ Audit trail
+
+**Time:** 16-20 hours
+
+---
+
+### Phase 3: Deployment Strategies & Health Checking (Weeks 6-7)
 
 **Files:** [PHASE_3_PROMPT.md](PHASE_3_PROMPT.md)
 
@@ -134,7 +158,7 @@ MyApp.deploy(:production, version: "1.1.0")
 
 ---
 
-### Phase 4: Clustering & Observability (Weeks 7-8)
+### Phase 4: Clustering & Observability (Weeks 8-9)
 
 **Files:** [PHASE_4_PROMPT.md](PHASE_4_PROMPT.md)
 
@@ -169,7 +193,7 @@ CUL8er.Observable.Metrics.snapshot(:production)
 
 ---
 
-### Phase 5: Testing, Polish & Release (Weeks 9-10)
+### Phase 5: Testing, Polish & Release (Weeks 10-11)
 
 **Files:** [PHASE_5_PROMPT.md](PHASE_5_PROMPT.md)
 

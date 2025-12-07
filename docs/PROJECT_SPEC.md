@@ -121,11 +121,12 @@ c_u_l8er/
 
 ## Implementation Phases
 
-**Phase 1:** Core DSL & Infrastructure (Weeks 1-2)
-**Phase 2:** Incus Integration & State (Weeks 3-4)
-**Phase 3:** Deployment Strategies (Weeks 5-6)
-**Phase 4:** Clustering & Observability (Weeks 7-8)
-**Phase 5:** Testing & Polish (Weeks 9-10)
+**Phase 1:** Core DSL & Infrastructure (Weeks 1-2)  
+**Phase 2:** Incus Integration & State (Weeks 3-4)  
+**Phase 2.5:** Security Hardening (Week 5)  
+**Phase 3:** Deployment Strategies (Weeks 6-7)  
+**Phase 4:** Clustering & Observability (Weeks 8-9)  
+**Phase 5:** Testing & Polish (Weeks 10-11)
 
 ## Technology Stack
 
