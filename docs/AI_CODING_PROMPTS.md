@@ -284,7 +284,7 @@ end
 
 ### Mix Task for Secrets
 ```elixir
-defmodule Mix.Tasks.CuL8er.Secret do
+defmodule Mix.Tasks.CUL8er.Secret do
   use Mix.Task
 
   @shortdoc "Manage secrets"
@@ -808,7 +808,7 @@ end
 ## Mix Task Example
 
 ```elixir
-defmodule Mix.Tasks.CuL8er.Deploy do
+defmodule Mix.Tasks.CUL8er.Deploy do
   use Mix.Task
   
   @shortdoc "Deploy a topology"
