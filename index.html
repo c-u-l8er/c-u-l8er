@@ -734,7 +734,14 @@
         </div>
         <div id="main-website-card">
             <nav>
-                <a href="#docs">Docs</a>
+                <a
+                    href="#"
+                    onclick="
+                        goBack();
+                        return false;
+                    "
+                    >← Back</a
+                >
                 <a href="https://github.com/c-u-l8er/c-u-l8er" target="_blank"
                     >Source Code</a
                 >
@@ -1262,6 +1269,16 @@
                     }, flipCooldown);
                 }
             });
+
+            function goBack() {
+                document.getElementById("main-website-card").style.display =
+                    "none";
+                document.querySelector(".card-container").style.display =
+                    "block";
+                // Reset flip to front
+                isFlipped = false;
+                document.querySelector(".card").classList.remove("flipped");
+            }
 
             // Initial position and velocity for the overlay
             let overlayX = Math.random() * (window.innerWidth - overlayWidth);
