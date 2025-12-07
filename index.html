@@ -21,6 +21,10 @@
         <link rel="manifest" href="/site.webmanifest" />
 
         <title>C U L8er: Concept Ultra Load-8alancer</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
 
         <meta charset="UTF-8" />
         <meta
@@ -102,6 +106,63 @@
                 box-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
                 transform: rotateY(180deg);
                 padding: 20px;
+                position: relative;
+            }
+            .link-banner {
+                display: inline-block;
+                padding: 2px 5px 0 5px;
+                font-size: 0.9em;
+                background-color: rgba(255, 255, 255, 0.7);
+                color: #000;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+                transition: all 0.3s ease;
+                margin: 5px;
+                line-height: 1em;
+                cursor: pointer;
+            }
+            .link-banner:hover {
+                background-color: rgba(255, 255, 255, 1);
+                transform: scale(1.05);
+            }
+            #main-website-card {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 80%;
+                height: 80%;
+                background: rgba(0, 0, 0, 0.5);
+                border: 10px solid red;
+                overflow-y: auto;
+                z-index: 1000;
+                color: white;
+                padding: 20px;
+                box-sizing: border-box;
+                display: none;
+            }
+            #main-website-card nav {
+                margin-bottom: 20px;
+            }
+            #main-website-card nav a {
+                color: white;
+                margin-right: 20px;
+                text-decoration: none;
+            }
+            #main-website-card nav a:hover {
+                text-decoration: underline;
+            }
+            #main-website-card h1 {
+                margin-top: 0;
+            }
+            #main-website-card ul {
+                list-style-type: disc;
+                margin-left: 20px;
+            }
+            #main-website-card a {
+                color: #ffcccc;
             }
 
             .logo-image {
@@ -293,6 +354,23 @@
                 ); /* Brighter brown on hover */
                 box-shadow: 0 0 15px rgba(139, 69, 19, 0.9); /* More intense glow on hover */
             }
+            .button.fleet {
+                background-color: white;
+                border-radius: 50%;
+                width: 50px;
+                height: 60px;
+                position: absolute;
+                bottom: -40px;
+                right: -50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                transition: transform 0.3s ease;
+            }
+            .button.fleet:hover {
+                transform: scale(1.1);
+            }
         </style>
     </head>
     <body>
@@ -309,7 +387,11 @@
                         </div>
                         <div class="card-back">
                             <div class="overlay-content">
-                                <h1>C U L8er</h1>
+                                <h1>
+                                    C U L8er<span class="link-banner"
+                                        >.LINK</span
+                                    >
+                                </h1>
                                 <p>(Concept Ultra Load-8alancer)<br /></p>
                                 <a
                                     href="https://traaviis.com"
@@ -365,10 +447,71 @@
                                     >IDEATION</a
                                 >
                             </div>
+                            <a
+                                href="https://fleetprompt.com"
+                                class="button fleet"
+                                target="_blank"
+                            >
+                                <i
+                                    class="fas fa-lightbulb"
+                                    style="font-size: 40px; color: #000"
+                                ></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="main-website-card">
+            <nav>
+                <a href="#docs">Docs</a>
+                <a href="https://github.com/c-u-l8er/c-u-l8er" target="_blank"
+                    >Source Code</a
+                >
+            </nav>
+            <h1>C U L8er - Computer Units Load-8alancer</h1>
+            <section id="docs">
+                <h2>Documentation</h2>
+                <p>Explore the comprehensive documentation for C U L8er:</p>
+                <ul>
+                    <li>
+                        <a href="docs/README.md" target="_blank">README.md</a> -
+                        Quick start guide and features overview
+                    </li>
+                    <li>
+                        <a href="docs/PROJECT_SPEC.md" target="_blank"
+                            >PROJECT_SPEC.md</a
+                        >
+                        - Complete project specification
+                    </li>
+                    <li>
+                        <a href="docs/AI_CODING_PROMPTS.md" target="_blank"
+                            >AI_CODING_PROMPTS.md</a
+                        >
+                        - Phase-by-phase implementation guide
+                    </li>
+                    <li>
+                        <a href="docs/IMPLEMENTATION_GUIDE.md" target="_blank"
+                            >IMPLEMENTATION_GUIDE.md</a
+                        >
+                        - Technical details and architecture
+                    </li>
+                    <li>
+                        <a href="docs/C_U_L8ER_FINAL_SUMMARY.md" target="_blank"
+                            >C_U_L8ER_FINAL_SUMMARY.md</a
+                        >
+                        - Final project summary
+                    </li>
+                </ul>
+                <p>
+                    Source code:
+                    <a
+                        href="https://github.com/c-u-l8er/c-u-l8er"
+                        target="_blank"
+                        >https://github.com/c-u-l8er/c-u-l8er</a
+                    >
+                </p>
+            </section>
         </div>
 
         <script>
@@ -580,6 +723,14 @@
             const card = document.querySelector(".card");
             const overlayWidth = cardContainer.offsetWidth;
             const overlayHeight = cardContainer.offsetHeight;
+
+            // Link banner click handler
+            const linkBanner = document.querySelector(".link-banner");
+            linkBanner.addEventListener("click", () => {
+                cardContainer.style.display = "none";
+                document.getElementById("main-website-card").style.display =
+                    "block";
+            });
 
             // Card flip control
             let isFlipped = false;
