@@ -15,6 +15,8 @@ defmodule CUL8er.Core.Incus do
 
   @doc """
   Executes a command on the specified host.
+  @doc """
+  Executes a command on the specified host.
 
   For local hosts, runs the command directly.
   For remote hosts, uses SSH if configured.
@@ -26,48 +28,16 @@ defmodule CUL8er.Core.Incus do
       {error, _code} -> {:error, error}
     end
   end
-
-  def execute(%Host{} = host, command) do
-    # For remote hosts, use SSH
-    # This requires SSH credentials to be configured
-    ssh_cmd = "ssh #{host.address} incus #{command}"
-
-    case System.cmd("sh", ["-c", ssh_cmd], stderr_to_stdout: true) do
-      {output, 0} -> {:ok, output}
-      {error, _code} -> {:error, error}
-    end
-  end
-
-  @doc """
-  Gets information about an Incus instance.
-  """
-  @spec info_instance(host(), instance_name()) :: result()
-  def info_instance(host, name) do
-    execute(host, "info #{name}")
-  end
-
-  @doc """
-  Lists all Incus instances on the host.
-  """
-  @spec list_instances(host()) :: result()
-  def list_instances(host) do
-    execute(host, "list --format json")
-  end
-
-  @doc """
-  Creates a new Incus instance from an image.
-  """
-  @spec create_instance(host(), instance_name(), String.t(), keyword()) :: result()
-  def create_instance(host, name, image, opts \\ []) do
-    type = Keyword.get(opts, :type, "container")
-    profile = Keyword.get(opts, :profile, "")
-
-    cmd = "launch #{image} #{name} --type #{type}"
-    cmd = if profile != "", do: cmd <> " --profile #{profile}", else: cmd
-
-    execute(host, cmd)
-  end
-
+  # def execute(%Host{} = host, command) do
+  #   # For remote hosts, use SSH
+  #   # This requires SSH credentials to be configured
+  #   ssh_cmd = "ssh #{host.address} incus #{command}"
+  #
+  #   case System.cmd("sh", ["-c", ssh_cmd], stderr_to_stdout: true) do
+  #     {output, 0} -> {:ok, output}
+  #     {error, _code} -> {:error, error}
+  #   end
+  # end
   @doc """
   Starts an Incus instance.
   """
@@ -80,20 +50,21 @@ defmodule CUL8er.Core.Incus do
   Stops an Incus instance.
   """
   @spec stop_instance(host(), instance_name()) :: result()
-  def stop_instance(host, name) do
-    execute(host, "stop #{name}")
+  def create_instance(host, name, image, opts \\ []) do
+    type = Keyword.get(opts, :type, "container")
+    profile = Keyword.get(opts, :profile, "")
+
+    cmd = if type == "container" do
+      "launch #{image} #{name} -c security.privileged=true"
+    else
+      "launch #{image} #{name} --vm"
+    IO.puts("Incus create_instance: #{cmd}")
+
+    execute(host, cmd)
   end
 
-  @doc """
-  Deletes an Incus instance.
-  """
-  @spec delete_instance(host(), instance_name()) :: result()
-  def delete_instance(host, name) do
-    execute(host, "delete #{name}")
+    execute(host, cmd)
   end
-
-  @doc """
-  Executes a command inside a running instance.
   """
   @spec exec_instance(host(), instance_name(), command()) :: result()
   def exec_instance(host, name, command) do

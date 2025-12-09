@@ -7,8 +7,8 @@ defmodule Examples.SimpleTopology do
       platform(:arch_linux)
     end
 
-    resource :web, type: :container, on: :local do
-      from_image("images:alpine/3.19")
+    resource :web, type: :vm, on: :local do
+      from_image("images:ubuntu/22.04")
 
       limits do
         cpu(cores: 2)

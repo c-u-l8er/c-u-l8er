@@ -77,11 +77,9 @@ defmodule CUL8er.Core.Executor do
   """
   @spec apply_plan(map()) :: result()
   def apply_plan(plan) do
-    changes = plan.changes
-
     # Apply changes in order
-    with :ok <- apply_host_changes(changes.hosts),
-         :ok <- apply_resource_changes(changes.resources) do
+    with :ok <- apply_host_changes(plan),
+         :ok <- apply_resource_changes(plan) do
       {:ok, :applied}
     end
   end
@@ -190,33 +188,36 @@ defmodule CUL8er.Core.Executor do
     :ok
   end
 
-  defp apply_host_changes(_changes) do
+  defp apply_host_changes(_plan) do
     # For now, hosts are assumed to exist
     # In a real implementation, this might configure networking, etc.
     :ok
   end
 
-  defp apply_resource_changes(changes) do
+  defp apply_resource_changes(plan) do
+    changes = plan.changes.resources
+
     # Apply resource changes
-    Enum.each(changes.to_create, fn resource_name ->
-      create_resource(resource_name, changes)
-    end)
-
-    Enum.each(changes.to_update, fn resource_name ->
-      update_resource(resource_name, changes)
-    end)
-
-    Enum.each(changes.to_delete, fn resource_name ->
-      delete_resource(resource_name, changes)
-    end)
-
-    :ok
+    with :ok <- create_resources(changes.to_create, plan),
+         :ok <- update_resources(changes.to_update, plan),
+         :ok <- delete_resources(changes.to_delete, plan) do
+      :ok
+    end
   end
 
-  defp create_resource(resource_name, changes) do
-    # Get resource definition from desired state
-    resource = changes.desired_state.resources[resource_name]
-    host = changes.desired_state.hosts[resource.host]
+  defp create_resources(resources, plan) do
+    Enum.reduce_while(resources, :ok, fn resource_name, _acc ->
+      case create_resource(resource_name, plan) do
+        :ok -> {:cont, :ok}
+        error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp create_resource(resource_name, plan) do
+    resource = plan.desired_state.resources[resource_name]
+    host = plan.desired_state.hosts[resource.host]
+    IO.puts("Creating resource #{resource_name} with image #{resource.image}")
 
     # Create the instance using Incus
     case Incus.create_instance(host, Atom.to_string(resource_name), resource.image) do
@@ -233,7 +234,16 @@ defmodule CUL8er.Core.Executor do
     end
   end
 
-  defp update_resource(resource_name, _changes) do
+  defp update_resources(resources, plan) do
+    Enum.reduce_while(resources, :ok, fn resource_name, _acc ->
+      case update_resource(resource_name, plan) do
+        :ok -> {:cont, :ok}
+        error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp update_resource(resource_name, _plan) do
     # For now, just log the update
     # Real implementation would handle configuration changes
     CUL8er.Security.Audit.log(:resource_updated, %{resource: resource_name})
@@ -256,10 +266,19 @@ defmodule CUL8er.Core.Executor do
     end
   end
 
-  defp delete_resource(resource_name, changes) do
+  defp delete_resources(resources, plan) do
+    Enum.reduce_while(resources, :ok, fn resource_name, _acc ->
+      case delete_resource(resource_name, plan) do
+        :ok -> {:cont, :ok}
+        error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp delete_resource(resource_name, plan) do
     # Get current resource definition
-    resource = changes.current_state["resources"][Atom.to_string(resource_name)]
-    host = changes.current_state["hosts"][resource["host"]]
+    resource = plan.current_state["resources"][Atom.to_string(resource_name)]
+    host = plan.current_state["hosts"][resource["host"]]
 
     # Delete the instance
     case Incus.delete_instance(host, Atom.to_string(resource_name)) do
