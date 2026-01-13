@@ -1,1783 +1,792 @@
-<!doctype html>
-<html>
-    <head>
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Ultraviolet Lithographer — Portfolio Company</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #141419;
+            --accent-primary: #00e5ff;
+            --accent-secondary: #7c3aed;
+            --accent-gold: #fbbf24;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.08);
+        }
 
-        <title>C U L8er: Cosmic Ultraviolet Lithographer</title>
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        />
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <meta charset="UTF-8" />
-        <meta
-            name="description"
-            content="See you later or c u l8er is (Cosmic Ultraviolet Lithographer) an agency for ideation."
-        />
-        <meta
-            name="keywords"
-            content="See You Later, Video Game, Transformation, Concept, Ultra, Lithography, Ideation, Agency"
-        />
-        <meta name="author" content="Travis Burandt" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-        <!-- Marked.js for markdown parsing -->
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        /* Animated background gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 90%, rgba(251, 191, 36, 0.08) 0%, transparent 50%);
+            animation: gradientShift 20s ease infinite;
+            z-index: -1;
+        }
 
-        <!-- Prism.js for syntax highlighting -->
-        <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-elixir.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
-        <style>
-            :root {
-                --primary: #6366f1;
-                --primary-dark: #4f46e5;
-                --accent: red;
-                --success: #22c55e;
-                --warning: #f59e0b;
-                --dark: #111;
-                --gray: #333;
-                --light: #f8fafc;
-                --white: #ffffff;
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-5%, -10%) rotate(120deg); }
+            66% { transform: translate(5%, 5%) rotate(240deg); }
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 4rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.875rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 50%, var(--accent-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradientFlow 8s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-description {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px);
             }
-            body {
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-                background-color: #000;
-                font-family: Arial, sans-serif;
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
             }
-            canvas {
-                display: block;
-            }
-            #canvas-container {
-                position: relative;
-                width: 100%;
-                height: 100vh;
-            }
-            .card-container {
-                position: absolute;
-                z-index: 100;
-                max-width: 450px;
-                width: 100%;
-                height: 450px;
-                padding: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.8s forwards;
+        }
+
+        .stat {
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 40px rgba(0, 229, 255, 0.15);
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent-primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 8rem 4rem;
+            position: relative;
+        }
+
+        .section-header {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        .companies-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .company-card-link {
+            text-decoration: none;
+            display: block;
+        }
+
+        .company-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .company-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .company-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 20px 60px rgba(0, 229, 255, 0.2);
+        }
+
+        .company-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s ease;
+        }
+
+        .company-card:hover .company-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .company-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .company-tagline {
+            font-size: 0.95rem;
+            color: var(--accent-primary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .company-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .company-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 6px;
+            color: var(--accent-primary);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Featured Card Styling */
+        .company-card.featured {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(0, 229, 255, 0.1));
+            border: 2px solid var(--accent-primary);
+        }
+
+        .company-card.featured .company-icon {
+            width: 80px;
+            height: 80px;
+            font-size: 2.25rem;
+        }
+
+        .company-card.featured .company-name {
+            font-size: 2.5rem;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 8rem 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .contact-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.25rem 3rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--bg-dark);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 229, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 4rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .copyright {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            width: 100%;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 1400px) {
+            .companies-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
 
-            .card-wrapper {
-                position: relative;
-                width: 100%;
-                height: 100%;
-                perspective: 1200px;
+            .company-card.featured {
+                grid-column: span 3;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .companies-grid {
+                grid-template-columns: 1fr;
             }
 
-            .card {
-                position: relative;
-                width: 100%;
-                height: 100%;
-                transform-style: preserve-3d;
-                transition: transform 0.6s ease-in-out;
-                cursor: pointer;
+            .company-card.featured {
+                grid-column: span 1;
             }
+        }
 
-            .card.flipped {
-                transform: rotateY(180deg);
-            }
-
-            .card-front,
-            .card-back {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                backface-visibility: hidden;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .card-front {
-                background-color: transparent;
-                box-shadow: none;
-                padding: 20px;
-            }
-
-            .card-back {
-                background-color: rgba(0, 0, 0, 0.5);
-                box-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
-                transform: rotateY(180deg);
-                padding: 20px;
-                position: relative;
-            }
-            .link-banner {
-                display: inline-block;
-                padding: 2px 5px 0 5px;
-                font-size: 0.9em;
-                background-color: rgba(255, 255, 255, 0.7);
-                color: #000;
-                text-decoration: none;
-                border-radius: 5px;
-                font-weight: bold;
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-                transition: all 0.3s ease;
-                margin: 5px;
-                line-height: 1em;
-                cursor: pointer;
-            }
-            .link-banner:hover {
-                background-color: rgba(255, 255, 255, 1);
-                transform: scale(1.05);
-            }
-            #main-website-card {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 80%;
-                height: 80%;
-                background: rgba(0, 0, 0, 0.5);
-                border: 10px solid red;
-                overflow-y: auto;
-                z-index: 1000;
-                color: white;
-                padding: 20px;
-                box-sizing: border-box;
-                display: none;
-            }
-            #main-website-card nav {
-                margin-bottom: 20px;
-            }
-            #main-website-card nav a {
-                color: white;
-                margin-right: 20px;
-                text-decoration: none;
-            }
-            #main-website-card nav a:hover {
-                text-decoration: underline;
-            }
-            #main-website-card h1 {
-                margin-top: 0;
-            }
-            #main-website-card ul {
-                list-style-type: disc;
-                margin-left: 20px;
-            }
-            #main-website-card a {
-                color: red;
-                text-shadow: 2px 2px 4px #999;
-            }
-
-            .logo-image {
-                max-width: 100%;
-                max-height: 100%;
-                width: 400px;
-                height: 400px;
-                object-fit: contain;
-                border-radius: 10px;
-                box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-            }
-
-            .overlay-content {
-                color: #fff;
-                text-align: center;
-                width: 100%;
-            }
-            h1 {
-                font-size: 32px;
-                margin: 0 0 10px 0;
-                text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-            }
-            p {
-                font-size: 16px;
-                margin: 0 0 20px 0;
-                opacity: 0.8;
-            }
-            .button {
-                display: inline-block;
-                padding: 10px 20px;
-                background-color: rgba(255, 215, 0, 0.7);
-                color: #000;
-                text-decoration: none;
-                border-radius: 5px;
-                font-weight: bold;
-                box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
-                transition: all 0.3s ease;
-                margin: 5px;
-            }
-            .button:hover {
-                background-color: rgba(255, 215, 0, 1);
-                transform: scale(1.05);
-                box-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
-            }
-
-            .button.solution {
-                background-color: rgba(
-                    128,
-                    128,
-                    128,
-                    0.7
-                ); /* Grey background */
-                color: #fff; /* White text */
-                box-shadow: 0 0 10px rgba(128, 128, 128, 0.7); /* Grey glow */
-            }
-
-            .button.solution:hover {
-                background-color: rgba(
-                    128,
-                    128,
-                    128,
-                    1
-                ); /* Brighter grey on hover */
-                box-shadow: 0 0 15px rgba(128, 128, 128, 0.9); /* More intense glow on hover */
-            }
-
-            .button.physic {
-                background-color: rgba(
-                    128,
-                    0,
-                    128,
-                    0.7
-                ); /* Purple background */
-                color: #fff; /* White text */
-                box-shadow: 0 0 10px rgba(128, 0, 128, 0.7); /* Purple glow */
-            }
-
-            .button.physic:hover {
-                background-color: rgba(
-                    128,
-                    0,
-                    128,
-                    1
-                ); /* Brighter purple on hover */
-                box-shadow: 0 0 15px rgba(128, 0, 128, 0.9); /* More intense glow on hover */
-            }
-
-            .button.main {
-                background-color: rgba(220, 20, 60, 0.9); /* Red background */
-                color: #fff; /* White text */
-                box-shadow: 0 0 10px rgba(220, 20, 60, 0.7); /* Red glow */
-            }
-
-            .button.main:hover {
-                background-color: rgba(
-                    220,
-                    20,
-                    60,
-                    1
-                ); /* Brighter red on hover */
-                box-shadow: 0 0 15px rgba(220, 20, 60, 0.9); /* More intense red glow on hover */
-            }
-
-            .button.export {
-                background-color: rgba(
-                    255,
-                    255,
-                    255,
-                    0.9
-                ); /* White background */
-                color: #000; /* Black text */
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.7); /* White glow */
-            }
-
-            .button.export:hover {
-                background-color: rgba(
-                    255,
-                    255,
-                    255,
-                    1
-                ); /* Brighter white on hover */
-                box-shadow: 0 0 15px rgba(255, 255, 255, 0.9); /* More intense glow on hover */
-            }
-
-            .button.agentic {
-                background-color: rgba(0, 128, 0, 0.7); /* Green background */
-                color: #fff; /* White text */
-                box-shadow: 0 0 10px rgba(0, 128, 0, 0.7); /* Green glow */
-            }
-
-            .button.agentic:hover {
-                background-color: rgba(
-                    0,
-                    128,
-                    0,
-                    1
-                ); /* Brighter green on hover */
-                box-shadow: 0 0 15px rgba(0, 128, 0, 0.9); /* More intense glow on hover */
-            }
-
-            .button.wafer {
-                background-color: rgba(
-                    135,
-                    206,
-                    235,
-                    0.7
-                ); /* Light blue background */
-                color: #000; /* Black text */
-                box-shadow: 0 0 10px rgba(135, 206, 235, 0.7); /* Light blue glow */
-            }
-
-            .button.wafer:hover {
-                background-color: rgba(
-                    135,
-                    206,
-                    235,
-                    1
-                ); /* Brighter light blue on hover */
-                box-shadow: 0 0 15px rgba(135, 206, 235, 0.9); /* More intense glow on hover */
-            }
-
-            .button.rnd {
-                background-color: rgba(139, 69, 19, 0.7); /* Brown background */
-                color: #fff; /* White text */
-                box-shadow: 0 0 10px rgba(139, 69, 19, 0.7); /* Brown glow */
-            }
-
-            .button.rnd:hover {
-                background-color: rgba(
-                    139,
-                    69,
-                    19,
-                    1
-                ); /* Brighter brown on hover */
-                box-shadow: 0 0 15px rgba(139, 69, 19, 0.9); /* More intense glow on hover */
-            }
-            .button.fleet {
-                background-color: white;
-                border-radius: 50%;
-                width: 50px;
-                height: 60px;
-                position: absolute;
-                bottom: -40px;
-                right: -50px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-                transition: transform 0.3s ease;
-            }
-            .button.fleet:hover {
-                transform: scale(1.1);
-            }
-
-            .docs-container {
-                display: grid;
-                grid-template-columns: 250px 1fr;
-                gap: 2rem;
-                margin-bottom: 4rem;
-            }
-
-            /* Sidebar */
-            .sidebar {
-                background: var(--light);
-                border-radius: 16px;
-                padding: 1.5rem;
-                height: fit-content;
-                position: sticky;
-            }
-
-            .sidebar h3 {
-                font-size: 1rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                margin-bottom: 1rem;
-                color: var(--dark);
-            }
-
-            .doc-list {
-                list-style: none;
-            }
-
-            .doc-item {
-                margin-bottom: 0.5rem;
-            }
-
-            .doc-link {
-                display: block;
-                padding: 0.75rem 1rem;
-                color: var(--gray);
-                text-decoration: none;
-                border-radius: 8px;
-                transition: all 0.2s;
-                font-size: 0.9rem;
-            }
-
-            .doc-link:hover {
-                background: white;
-                color: var(--primary);
-                transform: translateX(5px);
-            }
-
-            .doc-link.active {
-                background: white;
-                color: var(--primary);
-                font-weight: 600;
-                box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
-            }
-
-            /* Content Area */
-            .content {
-                background: grey;
-                border-radius: 16px;
-                padding: 2.5rem;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-                border: 1px solid rgba(99, 102, 241, 0.1);
-            }
-
-            .content h1 {
-                font-size: 2.5rem;
-                font-weight: 800;
-                margin-bottom: 1rem;
-                color: var(--dark);
-            }
-
-            .content h2 {
-                font-size: 1.8rem;
-                font-weight: 700;
-                margin-top: 2rem;
-                margin-bottom: 1rem;
-                color: var(--dark);
-            }
-
-            .content h3 {
-                font-size: 1.4rem;
-                font-weight: 600;
-                margin-top: 1.5rem;
-                margin-bottom: 0.75rem;
-                color: var(--dark);
-            }
-
-            .content p {
-                margin-bottom: 1rem;
-                color: var(--gray);
-                line-height: 1.7;
-            }
-
-            .content ul,
-            .content ol {
-                margin-bottom: 1rem;
+        @media (max-width: 768px) {
+            header, .hero, .portfolio, .contact, footer {
                 padding-left: 2rem;
+                padding-right: 2rem;
             }
 
-            .content li {
-                margin-bottom: 0.5rem;
-                color: var(--gray);
+            h1 {
+                font-size: 3rem;
             }
 
-            .content code {
-                background: var(--light);
-                padding: 0.2rem 0.4rem;
-                border-radius: 4px;
-                font-family: "Monaco", "Courier New", monospace;
-                font-size: 0.9rem;
-                color: var(--primary);
+            .hero-description {
+                font-size: 1.25rem;
             }
 
-            .content pre {
-                background: var(--dark);
-                color: white;
-                padding: 1.5rem;
-                border-radius: 8px;
-                overflow-x: auto;
-                margin-bottom: 1rem;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .content pre code {
-                background: none;
-                color: inherit;
-                padding: 0;
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
             }
+        }
 
-            .content blockquote {
-                border-left: 4px solid var(--primary);
-                padding-left: 1rem;
-                margin: 1rem 0;
-                color: var(--gray);
-                font-style: italic;
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .fade-in-delay-1 { animation-delay: 0.1s; }
+        .fade-in-delay-2 { animation-delay: 0.2s; }
+        .fade-in-delay-3 { animation-delay: 0.3s; }
+        .fade-in-delay-4 { animation-delay: 0.4s; }
+        .fade-in-delay-5 { animation-delay: 0.5s; }
+        .fade-in-delay-6 { animation-delay: 0.6s; }
+
+        /* Floating particles effect */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: float 15s infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
             }
-
-            .content table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 1rem;
+            10% {
+                opacity: 0.3;
             }
-
-            .content th,
-            .content td {
-                padding: 0.75rem;
-                text-align: left;
-                border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            90% {
+                opacity: 0.3;
             }
-
-            .content th {
-                font-weight: 600;
-                color: var(--dark);
-                background: var(--light);
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
             }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 9s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 12s;"></div>
 
-            /* Prism.js syntax highlighting overrides */
-            .content pre[class*="language-"] {
-                background: #2d2d2d;
-                margin: 1rem 0;
-                padding: 1rem;
-                border-radius: 8px;
-                overflow: auto;
-            }
+    <!-- Header -->
+    <header>
+        <div class="logo">Cosmic Ultraviolet Lithographer</div>
+    </header>
 
-            .content code[class*="language-"] {
-                background: none;
-                color: inherit;
-                padding: 0;
-                font-family: "Monaco", "Courier New", monospace;
-                font-size: 0.9rem;
-            }
-
-            /* Better table styling */
-            .content table {
-                border-collapse: collapse;
-                width: 100%;
-                margin: 1.5rem 0;
-                border-radius: 8px;
-                overflow: hidden;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            }
-
-            .content th,
-            .content td {
-                padding: 0.75rem 1rem;
-                text-align: left;
-                border-bottom: 1px solid rgba(99, 102, 241, 0.1);
-            }
-
-            .content th {
-                background: var(--light);
-                font-weight: 600;
-                color: var(--dark);
-            }
-
-            .content tr:last-child td {
-                border-bottom: none;
-            }
-
-            .content tr:hover {
-                background: rgba(99, 102, 241, 0.02);
-            }
-
-            /* Responsive */
-            @media (max-width: 768px) {
-                .hero h1 {
-                    font-size: 2.5rem;
-                }
-
-                .docs-container {
-                    grid-template-columns: 1fr;
-                }
-
-                .sidebar {
-                    position: static;
-                }
-
-                .nav-menu {
-                    display: none;
-                }
-            }
-
-            /* Loading state */
-            .loading {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 200px;
-                color: var(--gray);
-            }
-
-            /* Error state */
-            .error {
-                background: #fef2f2;
-                border: 1px solid #fecaca;
-                color: #dc2626;
-                padding: 1rem;
-                border-radius: 8px;
-                margin-bottom: 1rem;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="canvas-container">
-            <div class="card-container">
-                <div class="card-wrapper">
-                    <div class="card">
-                        <div class="card-front">
-                            <img
-                                src="logo.png"
-                                alt="C U L8er Logo"
-                                class="logo-image"
-                            />
-                        </div>
-                        <div class="card-back">
-                            <div class="overlay-content">
-                                <h1>
-                                    C U L8er<span class="link-banner"
-                                        >.LINK</span
-                                    >
-                                </h1>
-                                <p>(Cosmic Ultraviolet Lithographer)<br /></p>
-                                <a
-                                    href="https://traaviis.com"
-                                    class="button main"
-                                    target="_blank"
-                                    >INTELLIGENCE</a
-                                >
-                                <br />
-                                <a
-                                    href="https://ampersandboxdesign.com"
-                                    class="button"
-                                    target="_blank"
-                                    >DESIGN</a
-                                >
-                                <a
-                                    href="https://wrand.cc"
-                                    class="button rnd"
-                                    target="_blank"
-                                    >R&D</a
-                                >
-                                <br />
-                                <a
-                                    href="https://istrav.com"
-                                    class="button solution"
-                                    target="_blank"
-                                    >WEB SOLUTIONS</a
-                                >
-                                <br />
-                                <a
-                                    href="https://subvind.com"
-                                    class="button solution"
-                                    target="_blank"
-                                    >COMMUNITY SOLUTIONS</a
-                                >
-                                <br />
-                                <a
-                                    href="https://brokenrecord.studio"
-                                    class="button agentic"
-                                    target="_blank"
-                                    >AGENTIC</a
-                                >
-                                <a
-                                    href="https://bendscript.com"
-                                    class="button physic"
-                                    target="_blank"
-                                    >PHYSIC</a
-                                >
-                                <br />
-                                <a
-                                    href="https://runefort.com"
-                                    class="button wafer"
-                                    target="_blank"
-                                    >WAFER</a
-                                >
-                            </div>
-                            <a
-                                href="https://fleetprompt.com"
-                                class="button fleet"
-                                target="_blank"
-                            >
-                                <i
-                                    class="fas fa-lightbulb"
-                                    style="font-size: 40px; color: #000"
-                                ></i>
-                            </a>
-                        </div>
-                    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="eyebrow">Portfolio Company</div>
+            <h1>Printing the<br /> <span class="gradient-text">Intelligence</span><br /> of Tomorrow</h1>
+            <p class="hero-description">
+                A technology holding company pioneering next-generation ideas across culture, 
+                video games, and in-real-life intelligence—powered by 67
+                harmonious vibrations.
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat">
+                    <span class="stat-value">3</span>
+                    <span class="stat-label">Portfolio Companies</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">20$K</span>
+                    <span class="stat-label">Domain Asset Value</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">400$M</span>
+                    <span class="stat-label">Target Valuation</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">1</span>
+                    <span class="stat-label">Crown Jewels</span>
                 </div>
             </div>
         </div>
-        <div id="main-website-card">
-            <nav>
-                <a
-                    href="#"
-                    onclick="
-                        goBack();
-                        return false;
-                    "
-                    >← Back</a
-                >
-                <a href="https://github.com/c-u-l8er/c-u-l8er" target="_blank"
-                    >Source Code</a
-                >
-            </nav>
-            <section class="docs-container">
-                <aside class="sidebar">
-                    <h3>Navigation</h3>
-                    <ul
-                        class="doc-list"
-                        id="doc-list"
-                        style="margin-left: -40px"
-                    >
-                        <!-- populated by JS -->
-                    </ul>
-                </aside>
-                <main class="content" id="content">
-                    <div class="loading">Loading documentation...</div>
-                </main>
-            </section>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio">
+        <div class="section-header">
+            <h2 class="section-title">Portfolio Companies</h2>
+            <p class="section-subtitle">
+                Strategic investments across the highest-growth technology sectors, 
+                from AI agents to digital twin infrastructure.
+            </p>
         </div>
 
-        <script>
-            // Documentation variables
-            let docs = [
-                "docs/README.md",
-                "docs/PROJECT_SPEC.md",
-                "docs/AI_CODING_PROMPTS.md",
-                "docs/IMPLEMENTATION_GUIDE.md",
-                "docs/C_U_L8ER_FINAL_SUMMARY.md",
-                "docs/HOMELAB_SECURITY_ANALYSIS.md",
-                "docs/PHASE_2.5_SECURITY_HARDENING.md",
-            ];
-            let currentDoc = null;
-            let allDocsContent = {};
+        <div class="companies-grid">
+            <!-- RuneFort -->
+            <a href="https://alkeyword.com" target="_blank" rel="noopener noreferrer" class="company-card-link">
+                <div class="company-card featured fade-in fade-in-delay-1">
+                    <span class="featured-badge">Crown Jewel</span>
+                    <div class="company-icon"></div>
+                    <h3 class="company-name">Alkeyword</h3>
+                    <p class="company-tagline"></p>
+                    <p class="company-description">
+                        AI SEO/content generation
+                    </p>
+                    <div class="company-meta">
+                        <span class="meta-tag">?% CAGR</span>
+                        <span class="meta-tag">SEO/content</span>
+                        <span class="meta-tag">$?B Market</span>
+                    </div>
+                </div>
+            </a>
 
-            // Initialize documentation
-            async function initDocs() {
-                try {
-                    console.log("Initializing documentation...");
+            <!-- BendScript -->
+            <a href="https://bendscript.com" target="_blank" rel="noopener noreferrer" class="company-card-link">
+                <div class="company-card fade-in fade-in-delay-3">
+                    <div class="company-icon"></div>
+                    <h3 class="company-name">BendScript</h3>
+                    <p class="company-tagline"></p>
+                    <p class="company-description">
+                        AI code/script generation
+                    </p>
+                    <div class="company-meta">
+                        <span class="meta-tag">??.?% CAGR</span>
+                        <span class="meta-tag">code/script</span>
+                        <span class="meta-tag">$?B Market</span>
+                    </div>
+                </div>
+            </a>
 
-                    // Initialize marked.js
-                    if (!initializeMarked()) {
-                        console.warn(
-                            "Marked.js initialization failed, continuing with basic functionality",
-                        );
-                    }
+            <!-- BrokenRecord.Studio -->
+            <a href="https://brokenrecord.studio" target="_blank" rel="noopener noreferrer" class="company-card-link">
+                <div class="company-card fade-in fade-in-delay-3">
+                    <div class="company-icon"></div>
+                    <h3 class="company-name">BrokenRecord.Studio</h3>
+                    <p class="company-tagline"></p>
+                    <p class="company-description">
+                        AI music/audio disk jockey
+                    </p>
+                    <div class="company-meta">
+                        <span class="meta-tag">?% CAGR</span>
+                        <span class="meta-tag">music/audio</span>
+                        <span class="meta-tag">$?B Market</span>
+                    </div>
+                </div>
+            </a>
 
-                    // Load all docs
-                    await loadAllDocs();
-                    console.log(
-                        "Documents loaded:",
-                        Object.keys(allDocsContent),
-                    );
-                    renderDocList();
+        </div>
+    </section>
 
-                    // Load first document by default or check URL hash
-                    const hash = window.location.hash.substring(1);
-                    if (hash && docs.includes(hash)) {
-                        loadDocument(hash);
-                    } else if (docs.length > 0) {
-                        loadDocument(docs[0]);
-                    }
-                } catch (error) {
-                    console.error("Error initializing documentation:", error);
-                    showError(
-                        `Failed to initialize documentation: ${error.message}`,
-                    );
-                }
-            }
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="contact-content">
+            <h2>Let's Print Something <span class="gradient-text">Spectacular</span></h2>
+            <p class="contact-description">
+                Interested in partnerships, acquisitions, or investment opportunities? 
+                We're always open to strategic conversations with forward-thinking organizations.
+            </p>
+            <a href="mailto:contact@c-u-l8er.link" class="cta-button">Get In Touch</a>
+        </div>
+    </section>
 
-            // Load all documents
-            async function loadAllDocs() {
-                console.log(`Starting to load ${docs.length} documents...`);
-                let loadedCount = 0;
-                let failedCount = 0;
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Cosmic Ultraviolet Lithographer</div>
+            <div class="footer-links">
+                <a href="https://traaviis.com">Building</a>
+                <a href="https://c-u-l8er.link">Printing</a>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Cosmic Ultraviolet Lithographer Holdings. Printing intelligence for the next generation of memes.
+        </div>
+    </footer>
 
-                for (const doc of docs) {
-                    try {
-                        console.log(`Loading document: ${doc}`);
-                        const response = await fetch(doc);
-                        if (response.ok) {
-                            const content = await response.text();
-                            allDocsContent[doc] = content;
-                            loadedCount++;
-                            console.log(`Successfully loaded ${doc}`);
-                        } else {
-                            console.error(
-                                `Failed to load ${doc}: ${response.status}`,
-                            );
-                            failedCount++;
-                        }
-                    } catch (error) {
-                        console.error(`Error loading ${doc}:`, error);
-                        failedCount++;
-                    }
-                }
-
-                console.log(
-                    `Document loading complete. Loaded: ${loadedCount}, Failed: ${failedCount}`,
-                );
-                if (failedCount > 0) {
-                    showNotification(
-                        `Warning: ${failedCount} documents failed to load.`,
-                        "warning",
-                    );
-                }
-            }
-
-            function renderDocList() {
-                const docList = document.getElementById("doc-list");
-                if (!docList) return;
-
-                docList.innerHTML = "";
-
-                docs.forEach((doc) => {
-                    const li = document.createElement("li");
-                    li.className = "doc-item";
-
-                    const a = document.createElement("a");
-                    a.className = "doc-link";
-                    a.href = "#" + doc;
-                    a.textContent = formatDocTitle(doc);
-                    a.onclick = (e) => {
-                        e.preventDefault();
-                        loadDocument(doc);
-                    };
-
-                    if (currentDoc === doc) {
-                        a.classList.add("active");
-                    }
-
-                    li.appendChild(a);
-                    docList.appendChild(li);
-                });
-            }
-
-            function formatDocTitle(doc) {
-                return doc
-                    .replace("docs/", "")
-                    .replace(".md", "")
-                    .replace(/_/g, " ")
-                    .replace(/-/g, " ");
-            }
-
-            async function loadDocument(doc) {
-                const contentDiv = document.getElementById("content");
-                if (!contentDiv) return;
-
-                currentDoc = doc;
-
-                // Update active link
-                document.querySelectorAll(".doc-link").forEach((link) => {
-                    link.classList.remove("active");
-                    if (link.href.endsWith("#" + doc)) {
-                        link.classList.add("active");
-                    }
-                });
-
-                // Show loading
-                contentDiv.innerHTML =
-                    '<div class="loading">Loading document...</div>';
-
-                try {
-                    const content = allDocsContent[doc];
-                    if (!content) {
-                        throw new Error("Document content not found");
-                    }
-
-                    const htmlContent = markdownToHtml(content);
-                    contentDiv.innerHTML = htmlContent;
-
-                    // Update URL hash
-                    window.location.hash = doc;
-
-                    // Highlight code blocks
-                    if (typeof Prism !== "undefined") {
-                        Prism.highlightAll();
-                    }
-                } catch (error) {
-                    console.error("Error loading document:", error);
-                    contentDiv.innerHTML = `<div class="error">Error loading document: ${error.message}</div>`;
-                }
-            }
-
-            function initializeMarked() {
-                if (typeof marked === "undefined") {
-                    console.error("Marked.js is not loaded");
-                    return false;
-                }
-
-                // Configure marked
-                marked.setOptions({
-                    highlight: function (code, language) {
-                        if (
-                            typeof Prism !== "undefined" &&
-                            Prism.languages[language]
-                        ) {
-                            try {
-                                const highlighted = Prism.highlight(
-                                    code,
-                                    Prism.languages[language],
-                                    language,
-                                );
-                                return `<code class="language-${language}">${highlighted}</code>`;
-                            } catch (e) {
-                                console.warn(
-                                    `Prism highlighting failed for ${language}:`,
-                                    e,
-                                );
-                            }
-                        }
-                        return `<code class="language-${language}">${escapeHtml(code)}</code>`;
-                    },
-                    langPrefix: "language-",
-                    breaks: true,
-                    gfm: true,
-                });
-
-                return true;
-            }
-
-            function markdownToHtml(markdownStr) {
-                if (typeof marked === "undefined") {
-                    console.error(
-                        "Marked.js not available, falling back to plain text",
-                    );
-                    return `<pre>${escapeHtml(markdownStr)}</pre>`;
-                }
-
-                try {
-                    const html = marked.parse(markdownStr);
-                    return html;
-                } catch (error) {
-                    console.error("Error parsing markdown:", error);
-                    return `<div class="error">Error parsing markdown: ${escapeHtml(error.message)}</div>`;
-                }
-            }
-
-            function escapeHtml(text) {
-                const div = document.createElement("div");
-                div.textContent = text;
-                return div.innerHTML;
-            }
-
-            function showError(message) {
-                const contentDiv = document.getElementById("content");
-                if (contentDiv) {
-                    contentDiv.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
-                }
-            }
-
-            function showNotification(message, type = "info") {
-                // Simple notification - could be enhanced
-                console.log(`[${type.toUpperCase()}] ${message}`);
-            }
-
-            // Call initDocs when the page loads
-            document.addEventListener("DOMContentLoaded", initDocs);
-
-            // Add these variables at the top of your script
-            let mouseX = 0;
-            let mouseY = 0;
-            let hoveredBulb = null;
-            let isMouseDown = false;
-            let clickedBulb = null; // Track the clicked/dragged bulb
-            let isDragging = false; // Track if we're currently dragging
-            let stationaryBulb = null; // Track the stationary bulb that attracts others
-            let dragOffsetX = 0; // Offset for dragging
-            let dragOffsetY = 0; // Offset for dragging
-
-            // Create a canvas for stars and effects
-            const effectsCanvas = document.createElement("canvas");
-            effectsCanvas.width = window.innerWidth;
-            effectsCanvas.height = window.innerHeight;
-            effectsCanvas.style.position = "absolute";
-            effectsCanvas.style.top = "0";
-            effectsCanvas.style.left = "0";
-            effectsCanvas.style.zIndex = "1";
-            document
-                .getElementById("canvas-container")
-                .appendChild(effectsCanvas);
-            const effectsCtx = effectsCanvas.getContext("2d");
-
-            // 2. Now add the event listeners right after creating the canvas:
-            // Add mouse event listeners to the canvas
-            effectsCanvas.addEventListener("mousemove", function (event) {
-                mouseX = event.clientX;
-                mouseY = event.clientY;
-
-                // Handle dragging - only move the stationary bulb when explicitly dragging
-                if (
-                    isDragging &&
-                    clickedBulb &&
-                    clickedBulb === stationaryBulb
-                ) {
-                    // Update the dragged bulb position to follow mouse
-                    Body.setPosition(clickedBulb, {
-                        x: mouseX - dragOffsetX,
-                        y: mouseY - dragOffsetY,
-                    });
-                    // Ensure velocity remains zero while dragging
-                    Body.setVelocity(clickedBulb, { x: 0, y: 0 });
-                }
-
-                // Check if mouse is over any lightbulb
-                hoveredBulb = null;
-                for (let i = 0; i < lightbulbs.length; i++) {
-                    const bulb = lightbulbs[i];
-                    const dx = mouseX - bulb.position.x;
-                    const dy = mouseY - bulb.position.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < bulbSize) {
-                        hoveredBulb = bulb;
-                        effectsCanvas.style.cursor = "pointer";
-                        break;
-                    }
-                }
-
-                if (!hoveredBulb) {
-                    effectsCanvas.style.cursor = "default";
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        });
 
-            effectsCanvas.addEventListener("mousedown", function () {
-                isMouseDown = true;
-                if (hoveredBulb) {
-                    clickedBulb = hoveredBulb;
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
 
-                    // Check if this is the first click on this bulb (make it stationary)
-                    if (stationaryBulb !== clickedBulb) {
-                        // If there was a previous stationary bulb, restore its movement
-                        if (stationaryBulb) {
-                            Body.setVelocity(stationaryBulb, {
-                                x: (Math.random() - 0.5) * 3,
-                                y: (Math.random() - 0.5) * 3,
-                            });
-                        }
-
-                        // Make this bulb stationary
-                        stationaryBulb = clickedBulb;
-                        Body.setVelocity(clickedBulb, { x: 0, y: 0 });
-
-                        // Calculate drag offset for smooth dragging
-                        dragOffsetX = mouseX - clickedBulb.position.x;
-                        dragOffsetY = mouseY - clickedBulb.position.y;
-                    } else {
-                        // Second click on the same bulb - start dragging
-                        isDragging = true;
-                        dragOffsetX = mouseX - clickedBulb.position.x;
-                        dragOffsetY = mouseY - clickedBulb.position.y;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const card = entry.target.querySelector('.company-card');
+                    if (card) {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
                     }
                 }
             });
+        }, observerOptions);
 
-            effectsCanvas.addEventListener("mouseup", function () {
-                if (isDragging && clickedBulb) {
-                    // Stop dragging but keep the bulb stationary
-                    isDragging = false;
-                    Body.setVelocity(clickedBulb, { x: 0, y: 0 });
-                }
-                isMouseDown = false;
+        // Observe all company cards
+        document.querySelectorAll('.company-card-link').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Add parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            document.querySelectorAll('.company-icon').forEach((icon, index) => {
+                const speed = (index + 1) * 0.5;
+                const x = (mouseX - 0.5) * speed * 10;
+                const y = (mouseY - 0.5) * speed * 10;
+                icon.style.transform = `translate(${x}px, ${y}px)`;
             });
+        });
 
-            // Module aliases for Matter.js
-            const Engine = Matter.Engine,
-                Render = Matter.Render,
-                Runner = Matter.Runner,
-                Bodies = Matter.Bodies,
-                Composite = Matter.Composite,
-                Body = Matter.Body,
-                Events = Matter.Events;
-
-            // Create engine and world
-            const engine = Engine.create({
-                gravity: { x: 0, y: 0 }, // Zero gravity for space
-            });
-            const world = engine.world;
-
-            // Create renderer
-            const render = Render.create({
-                element: document.getElementById("canvas-container"),
-                engine: engine,
-                options: {
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                    wireframes: false,
-                    background: "transparent",
-                    pixelRatio: window.devicePixelRatio,
-                },
-            });
-            render.canvas.style.zIndex = "2";
-
-            // Run the renderer
-            Render.run(render);
-
-            // Create a runner
-            const runner = Runner.create();
-            Runner.run(runner, engine);
-
-            // Lightbulb data structure
-            const lightbulbs = [];
-            // Same color for all lightbulbs
-            const bulbColor = "#87CEEB"; // Light blue color
-
-            // Connection distance threshold - increased for larger bulbs
-            const connectionDistance = 300;
-
-            // MODIFIED: Increase size by 2.5 times - adjusted SVG paths
-            const bulbSize = 50; // Original was 20, now 50 (2.5x larger)
-
-            // SVG lightbulb path (scaled up 2.5x from original)
-            const lightbulbSVG = {
-                // SVG data for a proper lightbulb shape - scaled up 2.5x
-                bulbPath:
-                    "M0,-50 C-27.5,-50 -50,-27.5 -50,0 C-50,27.5 -27.5,50 0,50 C27.5,50 50,27.5 50,0 C50,-27.5 27.5,-50 0,-50",
-                basePath: "M-17.5,50 L-17.5,70 L17.5,70 L17.5,50",
-                filamentPath: "M-12.5,0 C-12.5,-12.5 12.5,-12.5 12.5,0",
-            };
-
-            // Modify the createLightbulb function to include a hovered property
-            function createLightbulb(x, y, number) {
-                // Convert number to 3-digit binary
-                const binaryStr = number.toString(2).padStart(3, "0");
-
-                // Glass bulb (main body) - 2.5x larger radius
-                const bulb = Bodies.circle(x, y, bulbSize, {
-                    friction: 0,
-                    frictionAir: 0, // No air friction for infinite movement
-                    restitution: 1,
-                    render: {
-                        fillStyle: bulbColor,
-                        opacity: 0.7,
-                    },
-                });
-
-                // Add properties for drawing glow and binary digits later
-                bulb.color = bulbColor;
-                bulb.glowIntensity = 0.7;
-                bulb.binaryStr = binaryStr;
-                bulb.isHovered = false; // Add this property
-
-                lightbulbs.push(bulb);
-                return bulb;
-            }
-
-            // MODIFIED: Create only 8 lightbulbs (numbered 0-7)
-            for (let i = 0; i < 8; i++) {
-                const x = Math.random() * window.innerWidth;
-                const y = Math.random() * window.innerHeight;
-
-                const lightbulb = createLightbulb(x, y, i);
-
-                // Add random velocity
-                Body.setVelocity(lightbulb, {
-                    x: (Math.random() - 0.5) * 3,
-                    y: (Math.random() - 0.5) * 3,
-                });
-
-                Composite.add(world, lightbulb);
-            }
-
-            // Setup for the bouncing card
-            const cardContainer = document.querySelector(".card-container");
-            const card = document.querySelector(".card");
-            const overlayWidth = cardContainer.offsetWidth;
-            const overlayHeight = cardContainer.offsetHeight;
-
-            // Link banner click handler
-            const linkBanner = document.querySelector(".link-banner");
-            linkBanner.addEventListener("click", () => {
-                cardContainer.style.display = "none";
-                document.getElementById("main-website-card").style.display =
-                    "block";
-            });
-
-            // Card flip control
-            let isFlipped = false;
-            let canFlip = true;
-            const flipCooldown = 700; // Slightly longer than animation duration
-
-            // Add card flip event listeners
-            cardContainer.addEventListener("mouseenter", function () {
-                if (canFlip && !isFlipped) {
-                    isFlipped = true;
-                    canFlip = false;
-                    card.classList.add("flipped");
-
-                    // Re-enable flipping after animation completes
-                    setTimeout(() => {
-                        canFlip = true;
-                    }, flipCooldown);
+        // Dynamic counter animation
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
                 }
-            });
-
-            cardContainer.addEventListener("mouseleave", function () {
-                // Add a small delay before allowing flip back to prevent accidental toggling
-                setTimeout(() => {
-                    if (canFlip && isFlipped) {
-                        isFlipped = false;
-                        canFlip = false;
-                        card.classList.remove("flipped");
-
-                        // Re-enable flipping after animation completes
-                        setTimeout(() => {
-                            canFlip = true;
-                        }, flipCooldown);
-                    }
-                }, 100);
-            });
-
-            // Alternative: Click to flip (more stable)
-            cardContainer.addEventListener("click", function () {
-                if (canFlip) {
-                    isFlipped = !isFlipped;
-                    canFlip = false;
-
-                    if (isFlipped) {
-                        card.classList.add("flipped");
-                    } else {
-                        card.classList.remove("flipped");
-                    }
-
-                    // Re-enable flipping after animation completes
-                    setTimeout(() => {
-                        canFlip = true;
-                    }, flipCooldown);
+                
+                if (element.classList.contains('stat-value')) {
+                    const suffix = element.textContent.match(/[KM$]/g)?.join('') || '';
+                    const numericValue = Math.floor(current);
+                    element.textContent = numericValue + suffix;
                 }
-            });
+            }, 16);
+        }
 
-            function goBack() {
-                document.getElementById("main-website-card").style.display =
-                    "none";
-                document.querySelector(".card-container").style.display =
-                    "block";
-                // Reset flip to front
-                isFlipped = false;
-                document.querySelector(".card").classList.remove("flipped");
-            }
-
-            // Initial position and velocity for the overlay
-            let overlayX = Math.random() * (window.innerWidth - overlayWidth);
-            let overlayY = Math.random() * (window.innerHeight - overlayHeight);
-            let overlayVX = 0.75; // X velocity
-            let overlayVY = 0.5; // Y velocity
-
-            // Apply initial position
-            cardContainer.style.left = `${overlayX}px`;
-            cardContainer.style.top = `${overlayY}px`;
-
-            // Star data with direction for movement
-            const stars = [];
-            for (let i = 0; i < 200; i++) {
-                stars.push({
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    radius: Math.random() * 1.5 + 0.5,
-                    opacity: Math.random() * 0.8 + 0.2,
-                    twinkleSpeed: Math.random() * 0.05 + 0.01,
-                    // Add very slow movement to stars
-                    vx: (Math.random() - 0.5) * 0.1,
-                    vy: (Math.random() - 0.5) * 0.1,
-                });
-            }
-
-            // Add before update event to handle wrap-around and gravitational effects
-            Events.on(engine, "beforeUpdate", function () {
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-
-                // Apply gravitational forces
-                for (let i = 0; i < lightbulbs.length; i++) {
-                    const bulb = lightbulbs[i];
-
-                    // Skip all physics for stationary bulb - it should be completely static
-                    if (bulb === stationaryBulb) {
-                        // Ensure stationary bulb has zero velocity at all times
-                        Body.setVelocity(bulb, { x: 0, y: 0 });
-                        continue;
+        // Trigger counter animation when stats come into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.dataset.animated) {
+                    const value = entry.target.textContent;
+                    const numericValue = parseInt(value.replace(/[^0-9]/g, ''));
+                    
+                    if (numericValue) {
+                        entry.target.dataset.animated = 'true';
+                        animateValue(entry.target, 0, numericValue, 2000);
                     }
-
-                    // Apply gravitational attraction to stationary bulb or mouse
-                    if (stationaryBulb) {
-                        const dx = stationaryBulb.position.x - bulb.position.x;
-                        const dy = stationaryBulb.position.y - bulb.position.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance > 0 && distance < 300) {
-                            // Reduced gravitational range
-                            // Much weaker force with better damping at close range
-                            const force = Math.min(
-                                (0.0002 * (300 - distance)) / distance,
-                                0.01,
-                            );
-
-                            // Apply force with velocity damping to prevent chaos
-                            Body.applyForce(bulb, bulb.position, {
-                                x: dx * force,
-                                y: dy * force,
-                            });
-
-                            // Add velocity damping when close to stationary bulb
-                            if (distance < 100) {
-                                const velocity = bulb.velocity;
-                                const damping = 0.95;
-                                Body.setVelocity(bulb, {
-                                    x: velocity.x * damping,
-                                    y: velocity.y * damping,
-                                });
-                            }
-                        }
-                    } else if (isMouseDown) {
-                        // Apply gravitational attraction to mouse when clicking
-                        const dx = mouseX - bulb.position.x;
-                        const dy = mouseY - bulb.position.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance > 0 && distance < 200) {
-                            // Reduced range for mouse attraction
-                            const force = Math.min(
-                                (0.0001 * (200 - distance)) / distance,
-                                0.005,
-                            );
-                            Body.applyForce(bulb, bulb.position, {
-                                x: dx * force,
-                                y: dy * force,
-                            });
-                        }
-                    }
-
-                    // Apply gentle orbital motion around stationary bulb
-                    if (stationaryBulb && bulb !== stationaryBulb) {
-                        const dx = stationaryBulb.position.x - bulb.position.x;
-                        const dy = stationaryBulb.position.y - bulb.position.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance > 80 && distance < 250) {
-                            // Reduced orbital range
-                            // Calculate perpendicular force for orbital motion
-                            const perpX = -dy / distance;
-                            const perpY = dx / distance;
-                            const orbitalForce = 0.0005; // Much weaker orbital force
-
-                            Body.applyForce(bulb, bulb.position, {
-                                x: perpX * orbitalForce,
-                                y: perpY * orbitalForce,
-                            });
-                        }
-                    }
-                }
-
-                // Check each lightbulb position and wrap if needed
-                for (let i = 0; i < lightbulbs.length; i++) {
-                    const bulb = lightbulbs[i];
-                    const bulbX = bulb.position.x;
-                    const bulbY = bulb.position.y;
-
-                    // Skip all position maintenance for stationary bulb
-                    if (bulb === stationaryBulb) continue;
-
-                    // Wrap horizontally - adjusted for larger size
-                    if (bulbX < -120) {
-                        Body.setPosition(bulb, {
-                            x: width + 120,
-                            y: bulbY,
-                        });
-                    } else if (bulbX > width + 120) {
-                        Body.setPosition(bulb, {
-                            x: -120,
-                            y: bulbY,
-                        });
-                    }
-
-                    // Wrap vertically - adjusted for larger size
-                    if (bulbY < -120) {
-                        Body.setPosition(bulb, {
-                            x: bulbX,
-                            y: height + 120,
-                        });
-                    } else if (bulbY > height + 120) {
-                        Body.setPosition(bulb, {
-                            x: bulbX,
-                            y: -120,
-                        });
-                    }
-
-                    // Maintain constant velocity (to counteract any slowdowns)
-                    // Skip for stationary bulb
-                    if (bulb === stationaryBulb) continue;
-
-                    const velocity = bulb.velocity;
-                    const speed = Math.sqrt(
-                        velocity.x * velocity.x + velocity.y * velocity.y,
-                    );
-
-                    // Limit maximum speed to prevent chaos
-                    const maxSpeed = 4;
-                    if (speed > maxSpeed) {
-                        const scale = maxSpeed / speed;
-                        Body.setVelocity(bulb, {
-                            x: velocity.x * scale,
-                            y: velocity.y * scale,
-                        });
-                    }
-
-                    // Only boost if speed drops below original level
-                    if (speed < 2) {
-                        const direction = {
-                            x: velocity.x / speed,
-                            y: velocity.y / speed,
-                        };
-
-                        Body.setVelocity(bulb, {
-                            x: direction.x * 3,
-                            y: direction.y * 3,
-                        });
-                    }
-                }
-            });
-
-            // Function to draw a path with transformation
-            function drawPath(ctx, path, x, y, rotation = 0) {
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.rotate(rotation);
-
-                const pathData = new Path2D(path);
-                ctx.fill(pathData);
-
-                ctx.restore();
-            }
-
-            // Update overlay position (bouncing effect)
-            function updateOverlayPosition() {
-                // Move the overlay according to its velocity
-                overlayX += overlayVX;
-                overlayY += overlayVY;
-
-                // Get current window dimensions
-                const maxX = window.innerWidth - overlayWidth;
-                const maxY = window.innerHeight - overlayHeight;
-
-                // Bounce off the edges
-                if (overlayX <= 0) {
-                    overlayX = 0;
-                    overlayVX = Math.abs(overlayVX);
-                } else if (overlayX >= maxX) {
-                    overlayX = maxX;
-                    overlayVX = -Math.abs(overlayVX);
-                }
-
-                if (overlayY <= 0) {
-                    overlayY = 0;
-                    overlayVY = Math.abs(overlayVY);
-                } else if (overlayY >= maxY) {
-                    overlayY = maxY;
-                    overlayVY = -Math.abs(overlayVY);
-                }
-
-                // Apply the new position
-                cardContainer.style.left = `${overlayX}px`;
-                cardContainer.style.top = `${overlayY}px`;
-
-                // Add a slight rotation based on direction
-                const angle =
-                    Math.atan2(overlayVY, overlayVX) * (180 / Math.PI);
-                cardContainer.style.transform = `rotate(${angle * 0.05}deg)`;
-
-                // Schedule the next update
-                requestAnimationFrame(updateOverlayPosition);
-            }
-
-            // Start the overlay animation
-            updateOverlayPosition();
-
-            // Animation function for stars, glows, letters, and connections
-            function animate() {
-                // Clear the canvas
-                effectsCtx.clearRect(
-                    0,
-                    0,
-                    effectsCanvas.width,
-                    effectsCanvas.height,
-                );
-
-                // Update and draw stars
-                for (let i = 0; i < stars.length; i++) {
-                    const star = stars[i];
-
-                    // Move the star
-                    star.x += star.vx;
-                    star.y += star.vy;
-
-                    // Wrap the stars when they go off screen
-                    if (star.x < 0) star.x = effectsCanvas.width;
-                    if (star.x > effectsCanvas.width) star.x = 0;
-                    if (star.y < 0) star.y = effectsCanvas.height;
-                    if (star.y > effectsCanvas.height) star.y = 0;
-
-                    // Twinkle effect
-                    star.opacity =
-                        0.2 +
-                        (Math.sin(Date.now() * star.twinkleSpeed) + 1) * 0.4;
-
-                    effectsCtx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                    effectsCtx.beginPath();
-                    effectsCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                    effectsCtx.fill();
-                }
-
-                // MODIFIED: Draw gold connections between nearby lightbulbs
-                for (let i = 0; i < lightbulbs.length; i++) {
-                    const bulb1 = lightbulbs[i];
-
-                    for (let j = i + 1; j < lightbulbs.length; j++) {
-                        const bulb2 = lightbulbs[j];
-
-                        // Calculate distance between bulbs
-                        const dx = bulb1.position.x - bulb2.position.x;
-                        const dy = bulb1.position.y - bulb2.position.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        // Draw connection if the bulbs are close enough
-                        if (distance < connectionDistance) {
-                            // Adjust opacity based on distance
-                            const opacity = 1 - distance / connectionDistance;
-
-                            // MODIFIED: Changed connections to brown
-                            effectsCtx.strokeStyle = `rgba(139, 69, 19, ${opacity * 0.7})`;
-                            effectsCtx.lineWidth = 3; // Slightly thicker brown lines
-                            effectsCtx.beginPath();
-                            effectsCtx.moveTo(
-                                bulb1.position.x,
-                                bulb1.position.y,
-                            );
-                            effectsCtx.lineTo(
-                                bulb2.position.x,
-                                bulb2.position.y,
-                            );
-                            effectsCtx.stroke();
-                        }
-                    }
-                }
-
-                // Draw each lightbulb using SVG paths
-                for (let i = 0; i < lightbulbs.length; i++) {
-                    const bulb = lightbulbs[i];
-                    const intensity =
-                        0.5 + Math.sin(Date.now() * 0.002 + i) * 0.2;
-
-                    // Check if this bulb is being hovered over
-                    bulb.isHovered = hoveredBulb === bulb;
-
-                    // Check if this is the stationary bulb
-                    const isStationary = bulb === stationaryBulb;
-
-                    // Set the bulb color based on state
-                    let currentBulbColor;
-                    if (isStationary) {
-                        currentBulbColor = "#FFD700"; // Gold for stationary bulb
-                    } else if (bulb.isHovered) {
-                        currentBulbColor = "#FF0000"; // Red if hovered
-                    } else {
-                        currentBulbColor = bulbColor; // Light blue otherwise
-                    }
-
-                    // Parse color to RGB for glow
-                    let r, g, b;
-                    if (isStationary) {
-                        // Gold color (255, 215, 0)
-                        r = 255;
-                        g = 215;
-                        b = 0;
-                    } else if (bulb.isHovered) {
-                        // Red color when hovered (255, 0, 0)
-                        r = 255;
-                        g = 0;
-                        b = 0;
-                    } else {
-                        // Original light blue color
-                        r = 135;
-                        g = 206;
-                        b = 235;
-                    }
-
-                    // Create radial gradient for glow - scaled up for larger bulbs
-                    const gradient = effectsCtx.createRadialGradient(
-                        bulb.position.x,
-                        bulb.position.y,
-                        12.5, // Scaled up
-                        bulb.position.x,
-                        bulb.position.y,
-                        isStationary ? 150 : 100, // Larger glow for stationary bulb
-                    );
-
-                    const glowMultiplier = isStationary ? 1.5 : 1.0; // Stronger glow for stationary bulb
-                    gradient.addColorStop(
-                        0,
-                        `rgba(${r}, ${g}, ${b}, ${0.7 * intensity * bulb.glowIntensity * glowMultiplier})`,
-                    );
-                    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-
-                    effectsCtx.fillStyle = gradient;
-                    effectsCtx.beginPath();
-                    effectsCtx.arc(
-                        bulb.position.x,
-                        bulb.position.y,
-                        isStationary ? 150 : 100, // Larger glow for stationary bulb
-                        0,
-                        Math.PI * 2,
-                    );
-                    effectsCtx.fill();
-
-                    // Draw glass bulb using SVG path - using current color based on state
-                    effectsCtx.fillStyle = currentBulbColor;
-                    drawPath(
-                        effectsCtx,
-                        lightbulbSVG.bulbPath,
-                        bulb.position.x,
-                        bulb.position.y,
-                    );
-
-                    // Draw a metal base using SVG path
-                    let baseColor;
-                    if (isStationary) {
-                        baseColor = "#FFD700"; // Gold base for stationary bulb
-                    } else if (bulb.isHovered) {
-                        baseColor = "rgba(0, 128, 0, 1)"; // Green if hovered
-                    } else {
-                        baseColor = "#777"; // Grey normally
-                    }
-                    effectsCtx.fillStyle = baseColor;
-                    drawPath(
-                        effectsCtx,
-                        lightbulbSVG.basePath,
-                        bulb.position.x,
-                        bulb.position.y,
-                    );
-
-                    // Add glow lines around the bulb - scaled up
-                    const glowIntensity =
-                        0.4 + Math.sin(Date.now() * 0.003 + i) * 0.2;
-
-                    // Change glow lines color based on state
-                    let glowColor;
-                    if (isStationary) {
-                        glowColor = `rgba(255, 215, 0, ${glowIntensity * 1.5})`; // Bright gold for stationary
-                    } else if (bulb.isHovered) {
-                        glowColor = `rgba(128, 128, 128, ${glowIntensity})`; // Grey glow when hovered
-                    } else {
-                        glowColor = `rgba(255, 215, 0, ${glowIntensity})`; // Gold glow normally
-                    }
-
-                    effectsCtx.strokeStyle = glowColor;
-                    effectsCtx.lineWidth = isStationary ? 3 : 2; // Thicker lines for stationary bulb
-
-                    // Draw 3 concentric circles with varying radii for glow effect - scaled up
-                    const baseRadius = isStationary ? 75 : 62.5; // Larger radius for stationary bulb
-                    const maxRadius = isStationary ? 100 : 87.5; // Larger max radius for stationary bulb
-                    for (
-                        let radius = baseRadius;
-                        radius <= maxRadius;
-                        radius += 12.5
-                    ) {
-                        effectsCtx.beginPath();
-                        effectsCtx.arc(
-                            bulb.position.x,
-                            bulb.position.y,
-                            radius,
-                            0,
-                            Math.PI * 2,
-                        );
-                        effectsCtx.stroke();
-                    }
-
-                    // Draw binary digits with color based on state
-                    let textColor;
-                    if (isStationary) {
-                        textColor = "#FF0000"; // Red text for stationary bulb
-                    } else if (bulb.isHovered) {
-                        textColor = "#FFFF00"; // Yellow text if hovered
-                    } else {
-                        textColor = "purple"; // Purple normally
-                    }
-
-                    effectsCtx.fillStyle = textColor;
-                    effectsCtx.font = isStationary
-                        ? "bold 24px monospace"
-                        : "bold 20px monospace"; // Larger font for stationary bulb
-                    effectsCtx.textAlign = "center";
-                    effectsCtx.textBaseline = "middle";
-
-                    // Position the digits vertically inside the bulb
-                    const digits = bulb.binaryStr.split("");
-                    const yOffset = isStationary ? 18 : 15; // Slightly larger spacing for stationary bulb
-                    effectsCtx.fillText(
-                        digits[0],
-                        bulb.position.x,
-                        bulb.position.y - yOffset,
-                    );
-                    effectsCtx.fillText(
-                        digits[1],
-                        bulb.position.x,
-                        bulb.position.y,
-                    );
-                    effectsCtx.fillText(
-                        digits[2],
-                        bulb.position.x,
-                        bulb.position.y + yOffset,
-                    );
-                }
-
-                requestAnimationFrame(animate);
-            }
-
-            // Start animation
-            animate();
-
-            // Button glow animation
-            setInterval(() => {
-                const button = document.querySelector(".button");
-                const currentGlow = Math.floor(Math.random() * 5) + 5; // Random glow between 5-10px
-                button.style.boxShadow = `0 0 ${currentGlow}px rgba(135, 206, 235, 0.8)`;
-            }, 1000);
-
-            // Handle window resize
-            window.addEventListener("resize", function () {
-                // Update canvases
-                render.canvas.width = window.innerWidth;
-                render.canvas.height = window.innerHeight;
-                effectsCanvas.width = window.innerWidth;
-                effectsCanvas.height = window.innerHeight;
-
-                // Update renderer
-                render.options.width = window.innerWidth;
-                render.options.height = window.innerHeight;
-
-                // Make sure the overlay stays within bounds after resize
-                const maxX = window.innerWidth - overlayWidth;
-                const maxY = window.innerHeight - overlayHeight;
-
-                if (overlayX > maxX) {
-                    overlayX = maxX;
-                    cardContainer.style.left = `${overlayX}px`;
-                }
-
-                if (overlayY > maxY) {
-                    overlayY = maxY;
-                    cardContainer.style.top = `${overlayY}px`;
-                }
-            });
-        </script>
-    </body>
+                }            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.stat-value').forEach(stat => {
+            statsObserver.observe(stat);
+        });
+    </script>
+</body>
 </html>
