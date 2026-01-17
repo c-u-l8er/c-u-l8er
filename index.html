@@ -235,6 +235,10 @@
                 animation: fadeInUp 0.8s ease 0.8s forwards;
             }
 
+            .stats-grid > a {
+                text-decoration: none;
+            }
+
             .stat {
                 padding: 1.5rem;
                 background: var(--bg-card);
@@ -690,7 +694,7 @@
                 href="https://ampersandboxdesign.com"
                 rel="noopener noreferrer"
                 referrerpolicy="no-referrer"
-                aria-label="Ampersandbox Design (opens in a new tab)"
+                aria-label="Ampersandbox Design"
                 title="Ampersandbox Design"
                 >[&]</a
             >
@@ -717,14 +721,26 @@
                         <span class="stat-value">3</span>
                         <span class="stat-label">Portfolio Companies</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-value">$25K</span>
-                        <span class="stat-label">Domain Asset Value</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value">$450M</span>
-                        <span class="stat-label">Target Valuation</span>
-                    </div>
+                    <a
+                        href="https://ampersandboxdesign.com/portfolio_company_complete_research"
+                    >
+                        <div class="stat">
+                            <span class="stat-value">$135K</span>
+                            <span class="stat-label"
+                                >2016 Domain Asset Value</span
+                            >
+                        </div>
+                    </a>
+                    <a
+                        href="https://ampersandboxdesign.com/portfolio_company_complete_research"
+                    >
+                        <div class="stat">
+                            <span class="stat-value">$350K</span>
+                            <span class="stat-label"
+                                >Domain Asset Value by 2034</span
+                            >
+                        </div>
+                    </a>
                     <div class="stat">
                         <span class="stat-value">1</span>
                         <span class="stat-label">Crown Jewels</span>
@@ -744,7 +760,47 @@
             </div>
 
             <div class="companies-grid">
-                <!-- Alkeyword — Crown Jewel -->
+                <!-- BendScript -->
+                <a
+                    href="https://bendscript.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    referrerpolicy="no-referrer"
+                    class="company-card-link"
+                    aria-label="BendScript (opens in a new tab)"
+                    title="Visit BendScript"
+                >
+                    <article
+                        class="company-card featured fade-in fade-in-delay-2"
+                        data-company="bendscript"
+                        data-sector="ai-devtools"
+                    >
+                        <span class="featured-badge">Silver</span>
+                        <div class="company-icon" aria-hidden="true">BS</div>
+                        <h3 class="company-name">BendScript</h3>
+                        <p class="company-tagline">Software, bent to will.</p>
+                        <p class="company-description">Low-Code/No-Code</p>
+                        <div class="company-meta" aria-label="Key metrics">
+                            <span
+                                class="meta-tag"
+                                title="Estimated domain value"
+                                >$85k DOMAIN VALUE</span
+                            >
+                            <span
+                                class="meta-tag"
+                                title="Estimated domain growth"
+                                >$225k by 2034</span
+                            >
+                            <span
+                                class="meta-tag"
+                                title="Estimated total addressable market"
+                                >~$101B TAM</span
+                            >
+                        </div>
+                    </article>
+                </a>
+
+                <!-- Alkeyword -->
                 <a
                     href="https://alkeyword.com"
                     target="_blank"
@@ -755,7 +811,7 @@
                     title="Visit Alkeyword"
                 >
                     <article
-                        class="company-card featured fade-in fade-in-delay-1"
+                        class="company-card fade-in fade-in-delay-1"
                         data-company="alkeyword"
                         data-sector="ai-seo"
                     >
@@ -772,52 +828,18 @@
                         <div class="company-meta" aria-label="Key metrics">
                             <span
                                 class="meta-tag"
-                                title="Estimated category growth"
-                                >~28% CAGR</span
+                                title="Estimated domain value"
+                                >$50k DOMAIN VALUE</span
                             >
-                            <span class="meta-tag">SEO • Content</span>
+                            <span
+                                class="meta-tag"
+                                title="Estimated domain growth"
+                                >$125k by 2034</span
+                            >
                             <span
                                 class="meta-tag"
                                 title="Estimated total addressable market"
-                                >~$18B TAM</span
-                            >
-                        </div>
-                    </article>
-                </a>
-
-                <!-- BendScript -->
-                <a
-                    href="https://bendscript.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    referrerpolicy="no-referrer"
-                    class="company-card-link"
-                    aria-label="BendScript (opens in a new tab)"
-                    title="Visit BendScript"
-                >
-                    <article
-                        class="company-card fade-in fade-in-delay-2"
-                        data-company="bendscript"
-                        data-sector="ai-devtools"
-                    >
-                        <div class="company-icon" aria-hidden="true">BS</div>
-                        <h3 class="company-name">BendScript</h3>
-                        <p class="company-tagline">Software, bent to will.</p>
-                        <p class="company-description">
-                            Agentic code and scripts that ship quietly—then keep
-                            shipping.
-                        </p>
-                        <div class="company-meta" aria-label="Key metrics">
-                            <span
-                                class="meta-tag"
-                                title="Estimated category growth"
-                                >~35% CAGR</span
-                            >
-                            <span class="meta-tag">DevTools • Agents</span>
-                            <span
-                                class="meta-tag"
-                                title="Estimated total addressable market"
-                                >~$25B TAM</span
+                                >Multi-billion SEO</span
                             >
                         </div>
                     </article>
@@ -849,13 +871,7 @@
                             <span
                                 class="meta-tag"
                                 title="Estimated category growth"
-                                >~24% CAGR</span
-                            >
-                            <span class="meta-tag">Music • Audio</span>
-                            <span
-                                class="meta-tag"
-                                title="Estimated total addressable market"
-                                >~$10B TAM</span
+                                >NOT FOR SALE</span
                             >
                         </div>
                     </article>
