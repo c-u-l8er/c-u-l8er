@@ -1,30 +1,68 @@
-## Let's Connect! 👋
-Hello World :)
-- 🔭 I’m currently working on IDEATION
-- 🌱 I’m currently learning BUSINESS
-- 👯 I’m looking to collaborate on YOUR PROJECTS
-- 🤔 I’m looking for help with MY PROJECTS
-- 💬 Ask me about ANYTHING
-- 📫 How to reach me:
-  - https://x.com/BurandtTravis
-  - https://www.youtube.com/@c_u_l8er
-  - https://www.facebook.com/travis.burandt/
-  - https://www.linkedin.com/in/travisburandt/
-  - https://discord.gg/JNtm4BUt
-- ⚡ Fun fact:
-Weaving has a remarkable mathematical connection! The binary pattern used in weaving (over-under) is essentially the same system that's used in computer programming. In fact, the Jacquard loom, invented in 1804, used punched cards to automatically control the weaving of complex patterns - a system that directly inspired early computer programming. Charles Babbage and later Herman Hollerith adopted this punched card approach for data processing, making the Jacquard loom a genuine predecessor to modern computers. This connection between textile art and computing shows how deeply mathematical thinking is woven into human creativity across different fields!
+# Travis Burandt
 
-<!--
-**c-u-l8er/c-u-l8er** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+**The map is not the territory, but the pattern is the path.**
 
-Here are some ideas to get you started:
+Software developer with ~20 years of experience, building open protocols for AI agent composition. Creator of the [&] Protocol ecosystem — a three-protocol stack that defines how AI agent capabilities compose, circulate, and get measured.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## The Three-Protocol Stack
+
+| Protocol | Purpose | What it does |
+|----------|---------|--------------|
+| **[&] Protocol** | Structural composition | Declares what an agent *is* — memory, reasoning, time, space, governance — compiled to MCP + A2A |
+| **PULSE** | Temporal loop algebra | Declares how loops *run* — phases, cadence, nesting, cross-loop signals |
+| **PRISM** | Diagnostic measurement | Measures how loops *perform* — the first self-improving benchmark for agent memory |
+
+## Flagship Projects
+
+### [Graphonomous](https://github.com/c-u-l8er/graphonomous) — Continual Learning Engine
+
+Elixir/OTP application with a durable SQLite-backed knowledge graph, confidence-updating learning loop, and MCP server exposing 5 loop-phase machines. Ships as an npm package (`npx -y graphonomous`), works with Claude Code, Zed, Cursor, and any MCP client.
+
+- 768D neural embeddings (nomic-embed-text-v2-moe)
+- AGM-rational belief revision and intentional forgetting
+- 455+ tests, 92.6% QA proxy accuracy on LongMemEval
+
+### [AmpersandBoxDesign](https://github.com/c-u-l8er/AmpersandBoxDesign) — [&] Protocol Spec + Reference Impl
+
+The open spec, JSON schemas, Elixir reference implementation, and npm/Python SDKs. Five capability primitives: `&memory`, `&reason`, `&time`, `&space`, `&govern`.
+
+### [PRISM](https://github.com/c-u-l8er/PRISM) — Benchmark Engine (OS-009)
+
+Elixir/OTP benchmark engine for iterative agent memory systems. Compose scenarios, run against any registered system, observe with CL-dimension scoring, reflect with IRT calibration.
+
+### [PULSE](https://github.com/c-u-l8er/PULSE) — Loop State Exchange (OS-010)
+
+Temporal algebra standard. Every loop declares its phases, cadence, substrates, invariants, and cross-loop connections in a single manifest file.
+
+## Portfolio Ecosystem
+
+The [&] ecosystem includes 10+ products sharing a unified Supabase backend, each with its own spec:
+
+| Project | Domain |
+|---------|--------|
+| [BendScript](https://github.com/c-u-l8er/bendscript.com) | Knowledge graph editor (SvelteKit + Supabase) |
+| [WebHost.Systems](https://github.com/c-u-l8er/WebHost.Systems) | Hosting platform (Node.js + Vite + React) |
+| [FleetPrompt](https://github.com/c-u-l8er/fleetprompt.com) | Agent marketplace |
+| [AgenTroMatic](https://github.com/c-u-l8er/agentromatic.com) | Deliberation engine |
+| [Delegatic](https://github.com/c-u-l8er/delegatic.com) | Governance protocol |
+| [GeoFleetic](https://github.com/c-u-l8er/geofleetic.com) | Spatial intelligence |
+| [TickTickClock](https://github.com/c-u-l8er/ticktickclock.com) | Temporal intelligence |
+| [OpenSentience](https://github.com/c-u-l8er/opensentience.org) | Research runtime |
+
+## Tech Stack
+
+**Languages:** Elixir/OTP, TypeScript, JavaScript, SQL, SvelteKit
+
+**Infrastructure:** Supabase (shared PostgreSQL), SQLite (embedded), Fly.io, Vite, React
+
+## Let's Connect
+
+[![X](https://img.shields.io/badge/X-@BurandtTravis-000?style=flat&logo=x)](https://x.com/BurandtTravis)
+[![YouTube](https://img.shields.io/badge/YouTube-@c__u__l8er-red?style=flat&logo=youtube)](https://www.youtube.com/@c_u_l8er)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-travisburandt-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/travisburandt/)
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?style=flat&logo=discord)](https://discord.gg/JNtm4BUt)
+[![Facebook](https://img.shields.io/badge/Facebook-travis.burandt-1877F2?style=flat&logo=facebook)](https://www.facebook.com/travis.burandt/)
+
+---
+
+> MCP defines how agents call tools. A2A defines how agents call agents. **[&] defines how capabilities compose into a coherent agent.**
